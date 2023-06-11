@@ -1,0 +1,31 @@
+# Compiled files
+target/
+
+# IDE-specific files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Maven-specific files
+mvnw
+.mvn/
+
+# Dependency directories
+lib/
+libs/
+
+# Configuration files
+config.yml
+secrets.properties
+
+# Temporary files
+.DS_Store
+Thumbs.db
+cache/
+logs/
+
+# Server-specific files
+logs/
+world/
