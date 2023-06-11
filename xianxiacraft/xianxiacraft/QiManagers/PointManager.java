@@ -59,11 +59,19 @@ public class PointManager implements Listener {
     public static double percentToNextStage(Player player) {
         int points = getPoints(player);
         int stage = getStage(player);
-        int stageStartPoints = 20 * (int) Math.pow(2, stage - 1);
-        int stageEndPoints = (20 * (int) Math.pow(2, stage)) - 1;
-        double stagePointsRange = stageEndPoints - stageStartPoints + 1; // Add 1 to include the end point
-        double progressWithinStage = points - stageStartPoints;
-        double percentage = (progressWithinStage / stagePointsRange) * 100;
+
+        //percent = 100*(myManager.getPoints() / (20 * Math.pow(10, (myManager.getStage()+1) * Math.log10(2)) - 20));
+
+        //okay equation for progress:
+        // 100 * (points - (20 * Math.pow(10,(stage) * Math.log10(2)) - 20)) / ((20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20) - (20 * Math.pow(10,(stage) * Math.log10(2)) - 20))
+        // (points - previous stage total points) / (next stage points - prevous stage points)
+
+        //working but not to the degree I want
+        //double percentage = 100*(points/(20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20));
+
+        double variable1 = 20 * Math.pow(10, (stage) * Math.log10(2)) - 20;
+        double percentage = 100 * (points - variable1) / ((20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20) - variable1);
+
 
         return Math.round(percentage * 100.0) / 100.0;
     }
@@ -83,6 +91,8 @@ public class PointManager implements Listener {
 
 
     }
+
+     */
 
 
     public void savePointData() {

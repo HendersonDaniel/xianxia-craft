@@ -30,7 +30,8 @@ public class PointHandler implements Listener {
 
 
 
-
+/*
+    this was a test for the point stuff but it is no longer needed
     @EventHandler
     public void onDropDirt(PlayerDropItemEvent event){
 
@@ -38,4 +39,6 @@ public class PointHandler implements Listener {
         ScoreboardManager1.updateScoreboard(event.getPlayer());
 
     }
+
+ */
 }

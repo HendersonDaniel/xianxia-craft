@@ -50,8 +50,8 @@ public class IronSkinManual extends Manual {
 
 
         if (itemInHand.getType() == Material.IRON_INGOT){
-            //fix equation to work all the time
-            if(points == ((20 * (int) Math.pow(2, stage))-1)){
+            //fix equation to work all the time FIXED BUT it rounds wrong on stage 2
+            if(points + 1 ==  (int) (20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20)){
                 if(!(countNearbyIronBlocks(player,10) >= (Math.pow(2,stage-1)))){
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage("Breakthrough requirement not met. Consult your manual.");
