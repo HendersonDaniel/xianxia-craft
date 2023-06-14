@@ -1,9 +1,11 @@
 package xianxiacraft.xianxiacraft.handlers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
@@ -14,6 +16,7 @@ import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 import xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual;
+import xianxiacraft.xianxiacraft.handlers.Manuals.IceManual;
 import xianxiacraft.xianxiacraft.handlers.Manuals.IronSkinManual;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
@@ -41,13 +44,27 @@ public class PointHandler implements Listener {
 
         Player player = event.getPlayer();
         ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+        String manual = getManual(player);
 
         //ironskin manual
-        if(getManual(player).equals("Ironskin Manual")){
+        if(manual.equals("Ironskin Manual")){
             IronSkinManual.ironSkinManualPointIncrement(itemInHand,player);
+        } else if(manual.equals("Ice Manual")){
+            IceManual.iceManualPointIncrement(itemInHand,player);
         }
 
 
+    }
+
+    @EventHandler
+    public void onPlayerPlaceEvent(BlockPlaceEvent event){
+
+        Player player = event.getPlayer();
+        String manual = getManual(player);
+
+        if(manual.equals("Ice Manual") && event.getBlockPlaced().getType() == Material.ICE){
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

@@ -12,7 +12,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 public class FattyManual extends Manual{
 
     public FattyManual(){
-        super("Fatty Manual");
+        super("Fatty Manual",0.01,4,4);
     }
 
     public static void fattyManualPointIncrement(Player player, ItemStack item){

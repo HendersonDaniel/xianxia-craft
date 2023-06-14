@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
+import xianxiacraft.xianxiacraft.util.FreezeEffect;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.*;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
@@ -21,9 +22,15 @@ import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.getPunchBool
 
 public class HitEvents implements Listener {
 
+    private XianxiaCraft plugin;
+    FreezeEffect freezeEffect;
     public HitEvents(XianxiaCraft plugin){
         Bukkit.getPluginManager().registerEvents(this,plugin);
+        this.plugin = plugin;
+        freezeEffect = new FreezeEffect(plugin);
     }
+
+
 
 
     //attack damage calculation, defense against other player calculation, punch techniques
@@ -47,8 +54,8 @@ public class HitEvents implements Listener {
 
                 //check for manual type
                 if (attackingPlayerManual.equals("Ironskin Manual")) {
-                    //ironskin manual multiplies attack by 2.
-                    attackDamage *= 1.5;
+                    //ironskin manual multiplies attack by 1.5.
+                    attackDamage += (2 * attackingPlayerStage);
                 } else if(attackingPlayerManual.equals("Fatty Manual")){
                     LivingEntity target = (LivingEntity) event.getEntity();
                     Vector knockbackDirection = target.getLocation().toVector().subtract(attackingPlayer.getLocation().toVector()).normalize();
@@ -56,7 +63,10 @@ public class HitEvents implements Listener {
                     double knockbackVertical = 0.4 * attackingPlayerStage; // Adjust this value to control the vertical knockback
                     Vector knockbackVelocity = knockbackDirection.multiply(knockbackStrength).setY(knockbackVertical);
                     target.setVelocity(knockbackVelocity);
-                    attackDamage += 2 * attackingPlayerStage;
+                    attackDamage += (2 * attackingPlayerStage);
+                } else if(attackingPlayerManual.equals("Ice Manual")){
+                    LivingEntity target = (LivingEntity) event.getEntity();
+                    freezeEffect.applyFreezeDamage(target,attackingPlayer);
                 } // else if() for other manuals punching technique go here
             } else if(getPunchBool(attackingPlayer)){
                 attackingPlayer.sendMessage(ChatColor.GOLD + "You did not have enough qi to augment your punch.");
@@ -78,12 +88,30 @@ public class HitEvents implements Listener {
 
             double resultAttackDamage = attackDamage - defense;
 
+
+
             if (resultAttackDamage > 0) {
-                event.setDamage(resultAttackDamage);
+                event.setDamage(resultAttackDamage+1);
             } else {
                 //minimum attack
                 event.setDamage(1);
             }
+
+            //debug statements
+            Bukkit.getLogger().info("AttackingPlayerManual: " + attackingPlayerManual);
+            Bukkit.getLogger().info("AttackingPlayerStage: " + attackingPlayerStage);
+            Bukkit.getLogger().info("AttackPerStage: " + getManualAttackPerStage(attackingPlayerManual));
+            Bukkit.getLogger().info("Attack dmg: " + attackDamage);
+
+            Bukkit.getLogger().info("DefendingPlayerManual: " + defendingPlayerManual);
+            Bukkit.getLogger().info("DefendingPlayerStage: " + defendingPlayerStage);
+            Bukkit.getLogger().info("DefensePerStage: " + getManualDefensePerStage(defendingPlayerManual));
+            Bukkit.getLogger().info("Defense: " + defense);
+            Bukkit.getLogger().info("Resulting dmg: " + resultAttackDamage);
+            Bukkit.getLogger().info("setDamage: " + event.getDamage());
+            Bukkit.getLogger().info("getFinalDamage: " + event.getFinalDamage() + "\n");
+
+
 
             //mobs vs players
         } else if((event.getDamager() instanceof Monster) && (event.getEntity() instanceof Player)){

@@ -47,7 +47,9 @@ public class ManualManager implements Listener {
             if (object instanceof Manual) {
                 Manual manual = (Manual) object;
                 if (!(manual.getManualName().equals("none"))) {
-                    return manual.getAttackPerStage();
+                    if(manual.getManualName().equals(manualName)){
+                        return manual.getAttackPerStage();
+                    }
                 }
             }
         }
@@ -61,7 +63,9 @@ public class ManualManager implements Listener {
             if(object instanceof Manual){
                 Manual manual = (Manual) object;
                 if(!(manual.getManualName().equals("none"))){
-                    return manual.getDefensePerStage();
+                    if(manual.getManualName().equals(manualName)){
+                        return manual.getDefensePerStage();
+                    }
                 }
             }
         }

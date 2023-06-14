@@ -12,6 +12,7 @@ import xianxiacraft.xianxiacraft.commands.CultPassiveCommandExecutor;
 import xianxiacraft.xianxiacraft.handlers.HitEvents;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
 import xianxiacraft.xianxiacraft.handlers.PointHandler;
+import xianxiacraft.xianxiacraft.util.FreezeEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,8 @@ public final class XianxiaCraft extends JavaPlugin {
                 updateQiLevels(manualList);
             }
         }.runTaskTimer(this, 0L, 60L).getTaskId();
+
+
 
 
 
