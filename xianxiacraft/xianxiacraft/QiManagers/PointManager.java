@@ -2,16 +2,11 @@ package xianxiacraft.xianxiacraft.QiManagers;
 
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -76,23 +71,6 @@ public class PointManager implements Listener {
         return Math.round(percentage * 100.0) / 100.0;
     }
 
-    /*
-    public static double percentToNextStage(Player player) {
-
-        int points = getPoints(player);
-        int stage = getStage(player);
-        int stageStartPoints = 20 * (int) Math.pow(2, stage - 1);
-        int stageEndPoints = (20 * (int) Math.pow(2, stage)) - 1;
-        double stagePointsRange = stageEndPoints - stageStartPoints;
-        double progressWithinStage = points - stageStartPoints;
-        double percentage = (progressWithinStage / stagePointsRange) * 100;
-
-        return Math.round(percentage * 100.0) / 100.0;
-
-
-    }
-
-     */
 
 
     public void savePointData() {

@@ -8,8 +8,9 @@ import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.QiManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.QiManagers.ManualManager;
-import xianxiacraft.xianxiacraft.handlers.Manuals.IronSkinManual;
-import xianxiacraft.xianxiacraft.handlers.Manuals.Manual;
+import xianxiacraft.xianxiacraft.commands.CultPassiveCommandExecutor;
+import xianxiacraft.xianxiacraft.handlers.HitEvents;
+import xianxiacraft.xianxiacraft.handlers.Manuals.*;
 import xianxiacraft.xianxiacraft.handlers.PointHandler;
 
 import java.util.ArrayList;
@@ -37,14 +38,32 @@ public final class XianxiaCraft extends JavaPlugin {
 
         new ScoreboardManager1(this);
         new PointHandler(this);
+        new HitEvents(this);
+
+        //command logic
+        CultPassiveCommandExecutor cultPassiveCommandExecutor = new CultPassiveCommandExecutor();
+        getCommand("qipunch").setExecutor(cultPassiveCommandExecutor);
 
 
-        //manuals in the game
-        IronSkinManual ironSkinManual = new IronSkinManual(this);
+        //initialize every manual in the game here.
+        IronSkinManual ironSkinManual = new IronSkinManual();
+        FattyManual fattyManual = new FattyManual();
+        IceManual iceManual = new IceManual();
+        PheonixManual pheonixManual = new PheonixManual();
+        SpaceManual spaceManual = new SpaceManual();
+        SugarFiendManual sugarFiendManual = new SugarFiendManual();
+        VampireManual vampireManual = new VampireManual();
 
-        //list of the manuals
+        //list of the manuals (MAKE SURE TO UPDATE THIS AND THE ONE IN MANUALMANAGER AS MORE ARE ADDED)
         List<Object> manualList = new ArrayList<>();
         manualList.add(ironSkinManual);
+        manualList.add(fattyManual);
+        manualList.add(iceManual);
+        manualList.add(pheonixManual);
+        manualList.add(spaceManual);
+        manualList.add(sugarFiendManual);
+        manualList.add(vampireManual);
+
 
 
         taskId = new BukkitRunnable() {
@@ -56,16 +75,6 @@ public final class XianxiaCraft extends JavaPlugin {
         }.runTaskTimer(this, 0L, 60L).getTaskId();
 
 
-        /*
-        depreciated code:
-        //qi regen task
-        int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BukkitRunnable() {
-            @Override
-            public void run() {
-                updateQiLevels(manualList);
-            }
-        }, 0L, 20L);
-        */
 
     }
 
@@ -84,9 +93,8 @@ public final class XianxiaCraft extends JavaPlugin {
     private void updateQiLevels(List<Object> manualList) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             UUID playerId = player.getUniqueId();
-            if(!(manualManager.getManual(player).equals("none"))){
-                int currentQi = qiManager.getQi(player);
-                //remember maxQi for scoreboard and pointmanager later
+            if(!(ManualManager.getManual(player).equals("none"))){
+                int currentQi = QiManager.getQi(player);
                 int maxQi = (int) (10 * Math.pow(2,PointManager.getStage(player)));
                 double qiRegenPercent;
 
@@ -94,13 +102,13 @@ public final class XianxiaCraft extends JavaPlugin {
                     if(manual1 instanceof Manual){
                         Manual manual = (Manual) manual1;
                         if (!(manual.getManualName().equals("none"))){
-                            if(manualManager.getManual(player).equals(manual.getManualName())){
+                            if(ManualManager.getManual(player).equals(manual.getManualName())){
                                 qiRegenPercent = manual.getQiRegeneration();
                                 if(currentQi < maxQi){
                                     if((currentQi + (int) (maxQi*manual.getQiRegeneration())) > maxQi){
-                                        qiManager.setQi(player,maxQi);
+                                        QiManager.setQi(player,maxQi);
                                     } else {
-                                        qiManager.addQi(player,(int) Math.ceil(maxQi*manual.getQiRegeneration()));
+                                        QiManager.addQi(player,(int) Math.ceil(maxQi*manual.getQiRegeneration()));
                                     }
                                 }
                             }

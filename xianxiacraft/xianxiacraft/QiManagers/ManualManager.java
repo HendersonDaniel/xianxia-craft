@@ -1,6 +1,7 @@
 package xianxiacraft.xianxiacraft.QiManagers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,20 +12,25 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
+import xianxiacraft.xianxiacraft.handlers.Manuals.*;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.setPunchBool;
 
 public class ManualManager implements Listener {
 
     private final JavaPlugin plugin;
 
     public static Map<UUID, String> manualsMap = new HashMap<>();
+
+    //every manual in the game (MAKE SURE TO UPDATE AS MORE ARE ADDED)
+    public static List<Object> manualList1 = new ArrayList<Object>(Arrays.asList(new IronSkinManual(),new FattyManual(),new IceManual(), new PheonixManual(), new SpaceManual(), new SugarFiendManual(), new VampireManual())); //make sure to populate this
+
 
     public ManualManager(XianxiaCraft plugin){
         Bukkit.getPluginManager().registerEvents(this,plugin);
@@ -35,8 +41,36 @@ public class ManualManager implements Listener {
         return manualsMap.getOrDefault(player.getUniqueId(),"none");
     }
 
+    public static int getManualAttackPerStage(String manualName){
 
-    //needs to be fixed so that on right click of a MANUAL it changes the string manual. I think it is fixed
+        for(Object object : manualList1) {
+            if (object instanceof Manual) {
+                Manual manual = (Manual) object;
+                if (!(manual.getManualName().equals("none"))) {
+                    return manual.getAttackPerStage();
+                }
+            }
+        }
+
+        //default for people with no manual.
+        return 0;
+    }
+
+    public static int getManualDefensePerStage(String manualName){
+        for(Object object : manualList1){
+            if(object instanceof Manual){
+                Manual manual = (Manual) object;
+                if(!(manual.getManualName().equals("none"))){
+                    return manual.getDefensePerStage();
+                }
+            }
+        }
+        //default for players with no manual.
+        return 0;
+    }
+
+
+    //remember to add the update perm thing
     @EventHandler
     public void onManualChange(PlayerInteractEvent event) {
         ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
@@ -51,12 +85,17 @@ public class ManualManager implements Listener {
                 String bookAuthor = bookMeta.getAuthor();
 
                 // Check if the book title matches a specific technique manual
+                assert bookAuthor != null;
                 if(bookAuthor.equals("Spellslot")){
+                    assert bookTitle != null;
                     if(!(bookTitle.equals(manualsMap.get(event.getPlayer().getUniqueId())))){
                         manualsMap.put(event.getPlayer().getUniqueId(),bookTitle);
                         PointManager.setPoints(event.getPlayer(),1);
                         QiManager.setQi(event.getPlayer(),0);
-                        event.getPlayer().sendMessage("Cultivation Manual changed to " + bookTitle + ".\nCultivation has been reset.");
+                        event.getPlayer().sendMessage(ChatColor.GOLD + "Cultivation Manual changed to " + bookTitle + ".\nCultivation has been reset.");
+                        //set all technique commands to false
+                        setPunchBool(event.getPlayer(),false);
+
                         // Prevent the book from being opened when right-clicked
                         event.setCancelled(true);
                     }

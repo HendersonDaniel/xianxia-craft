@@ -21,11 +21,13 @@ import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
 
 public class ScoreboardManager1 implements Listener {
     private static Map<UUID, Scoreboard> scoreboardMap = new HashMap<>();
+    private static Map<UUID, Score> scoreQiMap = new HashMap<>();
+    private static Map<UUID,Score> scoreStageMap = new HashMap<>();
 
     private final JavaPlugin plugin;
 
-    private static Score scoreQi;
-    private static Score scoreStage;
+   // private static Score scoreQi;
+   // private static Score scoreStage;
 
     public ScoreboardManager1(XianxiaCraft plugin) {
         this.plugin = plugin;
@@ -56,28 +58,18 @@ public class ScoreboardManager1 implements Listener {
         double percent = percentToNextStage(player);
 
 
-        scoreQi = objective.getScore(ChatColor.GOLD + "" + "Qi: " + qi + "/" + maxQi);
+        Score scoreQi = objective.getScore(ChatColor.GOLD + "" + "Qi: " + qi + "/" + maxQi);
         scoreQi.setScore(0);
 
-        scoreStage = objective.getScore(ChatColor.GOLD + "" + "Stage: " + stage + " [" + percent + "%]");
+        Score scoreStage = objective.getScore(ChatColor.GOLD + "" + "Stage: " + stage + " [" + percent + "%]");
         scoreStage.setScore(1);
 
 
         scoreboardMap.put(player.getUniqueId(), scoreboard);
+        scoreQiMap.put(player.getUniqueId(),scoreQi);
+        scoreStageMap.put(player.getUniqueId(),scoreStage);
         player.setScoreboard(scoreboard);
 
-        /*
-        Team stageTeam = scoreboard.registerNewTeam("stageTeam");
-        stageTeam.addEntry(ChatColor.GOLD + "" + "Stage: ");
-        //change percentage to actual percentage
-        stageTeam.setSuffix("percentage");
-        objective.getScore(ChatColor.GOLD + "" + "Stage: ").setScore(getStage(player));
-
-        Team qiTeam = scoreboard.registerNewTeam("qiTeam");
-        qiTeam.addEntry(ChatColor.GOLD + "" + "Qi: ");
-        qiTeam.setSuffix(getQi(player) + "/" + getMaxQi(player));
-        objective.getScore(ChatColor.GOLD + "" + "Qi: ").setScore(getQi(player));
-        */
 
 
 
@@ -90,6 +82,9 @@ public class ScoreboardManager1 implements Listener {
         if (scoreboard != null) {
             Objective objective = scoreboard.getObjective("customObjective");
             if (objective != null) {
+
+                Score scoreQi = scoreQiMap.get(player.getUniqueId());
+                Score scoreStage = scoreStageMap.get(player.getUniqueId());
 
                 int qi = getQi(player);
                 int maxQi = getMaxQi(player);
@@ -106,40 +101,14 @@ public class ScoreboardManager1 implements Listener {
                 scoreStage = objective.getScore(ChatColor.GOLD + "" + "Stage: " + stage + " [" + percent + "%]");
                 scoreStage.setScore(1);
 
+                scoreboardMap.put(player.getUniqueId(),scoreboard);
+                scoreQiMap.put(player.getUniqueId(),scoreQi);
+                scoreStageMap.put(player.getUniqueId(),scoreStage);
+
             }
         }
     }
 
-
-    /*
-    public static void updateScoreboard(Player player) {
-        Scoreboard scoreboard = scoreboardMap.get(player.getUniqueId());
-        if (scoreboard != null) {
-            Objective objective = scoreboard.getObjective("customObjective");
-            if (objective != null) {
-                Score scoreStage = objective.getScore(ChatColor.GOLD + "" + "Stage:");
-                scoreStage.setScore(getStage(player));
-
-                Score scoreQi = objective.getScore(ChatColor.GOLD + "" + "Qi:");
-                scoreQi.setScore(getQi(player));
-
-
-                // Add updated scores with suffixes
-                Team stageTeam = scoreboard.registerNewTeam("stageTeam");
-                stageTeam.addEntry(ChatColor.GOLD + "" + "Stage: ");
-                //remember to chagne percentage
-                stageTeam.setSuffix("percentage");
-                objective.getScore(ChatColor.GOLD + "" + "Stage: ").setScore(getStage(player));
-
-                Team qiTeam = scoreboard.registerNewTeam("qiTeam");
-                qiTeam.addEntry(ChatColor.GOLD + "" + "Qi: ");
-                qiTeam.setSuffix(getQi(player) + "/" + getMaxQi(player));
-                objective.getScore(ChatColor.GOLD + "" + "Qi: ").setScore(getQi(player));
-            }
-        }
-    }
-
-     */
 
 
 
