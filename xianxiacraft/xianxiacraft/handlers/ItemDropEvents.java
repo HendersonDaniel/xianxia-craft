@@ -47,7 +47,7 @@ public class ItemDropEvents implements Listener {
             } else if(entityType == EntityType.PIGLIN || entityType == EntityType.ZOMBIFIED_PIGLIN){
                 event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), sugarFiendManualItem);
             } else if(entityType == EntityType.CREEPER){
-                event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), tutorialBookItem);
+                event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), lightningManualItem);
             }
         }
     }

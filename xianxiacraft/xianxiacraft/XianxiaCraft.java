@@ -47,7 +47,7 @@ public final class XianxiaCraft extends JavaPlugin {
         //command logic
         CultPassiveCommandExecutor cultPassiveCommandExecutor = new CultPassiveCommandExecutor();
         getCommand("qipunch").setExecutor(cultPassiveCommandExecutor);
-        Objects.requireNonNull(getCommand("tutorial")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("cultutorial")).setExecutor(cultPassiveCommandExecutor);
 
 
         //item adding logic

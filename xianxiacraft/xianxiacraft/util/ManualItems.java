@@ -42,7 +42,7 @@ public class ManualItems {
 
         assert bookMeta != null;
         bookMeta.setTitle("Tutorial Book");
-        bookMeta.setAuthor("Spellslot");
+        bookMeta.setAuthor("Anonymous");
         bookMeta.setDisplayName("A Beginner's Guide to Cultivation");
         bookMeta.addPage("Welcome to Spellslot's (Daniel's) XianxiaCraft!\n" +
                 "\n" +
@@ -75,7 +75,7 @@ public class ManualItems {
                 "\n" +
                 "Eat suspicious stew to harness your fungal powers.\n" +
                 "\n" +
-                "To breakthrough, you must be in a Mycelium Biome. \n" +
+                "To breakthrough, you must be near Mycelium blocks. \n" +
                 "\n" +
                 "You do double damage near Mycelium blocks.");
         bookMeta.addPage("Stage 1:\n" +

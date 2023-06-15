@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
+import xianxiacraft.xianxiacraft.util.CountNearbyBlocks;
 
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
@@ -35,7 +36,7 @@ public class FungalManual extends Manual{
             }
 
             if (points + 1 == (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
-                if (!(player.getLocation().getBlock().getBiome() == Biome.MUSHROOM_FIELDS)) {
+                if (!(CountNearbyBlocks.countNearbyBlocks(player,Material.MYCELIUM) >= (Math.pow(2,stage-1)))) {
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                     return;

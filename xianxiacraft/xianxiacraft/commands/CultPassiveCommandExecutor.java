@@ -9,6 +9,7 @@ import xianxiacraft.xianxiacraft.QiManagers.TechniqueManager;
 
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 import static xianxiacraft.xianxiacraft.util.ManualItems.lightningManualItem;
+import static xianxiacraft.xianxiacraft.util.ManualItems.tutorialBookItem;
 
 public class CultPassiveCommandExecutor implements CommandExecutor {
 
@@ -26,8 +27,8 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
 
 
         //tutorial book
-        if(command.getName().equalsIgnoreCase("tutorial")){
-            sender.getWorld().dropItem(sender.getLocation(), lightningManualItem);
+        if(command.getName().equalsIgnoreCase("cultutorial")){
+            sender.getWorld().dropItem(sender.getLocation(), tutorialBookItem);
             return true;
         }
 
