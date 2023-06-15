@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import xianxiacraft.xianxiacraft.QiManagers.TechniqueManager;
 
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
+import static xianxiacraft.xianxiacraft.util.ManualItems.lightningManualItem;
 
 public class CultPassiveCommandExecutor implements CommandExecutor {
 
@@ -22,6 +23,13 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
         }
 
         Player sender = (Player) commandSender;
+
+
+        //tutorial book
+        if(command.getName().equalsIgnoreCase("tutorial")){
+            sender.getWorld().dropItem(sender.getLocation(), lightningManualItem);
+            return true;
+        }
 
 
         //QiPunch
@@ -39,8 +47,6 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
             }
 
             TechniqueManager.setPunchBool(sender,!currentPunchBool);
-
-
         }
 
         //next technique passive

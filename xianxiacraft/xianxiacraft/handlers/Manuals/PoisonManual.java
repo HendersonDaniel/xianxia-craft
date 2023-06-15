@@ -1,30 +1,26 @@
 package xianxiacraft.xianxiacraft.handlers.Manuals;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import sun.jvm.hotspot.gc.shared.Space;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 
-import java.util.Random;
-
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
-import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
 
-public class SpaceManual extends Manual{
+public class PoisonManual extends Manual{
 
-    public SpaceManual(){
-        super("Space Manual",0.01,4,3);
+    public PoisonManual(){
+        super("Poison Manual",0.01,4,5);
     }
 
-    public static void spaceManualPointIncrement(Player player, ItemStack item) {
 
-        if (item.getType() == Material.CHORUS_FRUIT) {
+    public static boolean poisonManualPointIncrement(Player player, ItemStack item) {
+
+        if (item.getType() == Material.SPIDER_EYE || item.getType() == Material.PUFFERFISH || item.getType() == Material.POISONOUS_POTATO) {
 
             int stage = getStage(player);
             int points = getPoints(player);
@@ -39,32 +35,23 @@ public class SpaceManual extends Manual{
             }
 
             if (points + 1 == (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
-                if (!(countNearbyBlocks(player, Material.SHULKER_BOX) >= (Math.pow(2,stage-1)))) {
+                if (!(player.getLocation().getBlock().getBiome() == Biome.SWAMP)) {
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
-                    return;
+                    return false;
                 }
                 PointManager.addPoints(player, 1);
                 ScoreboardManager1.updateScoreboard(player);
-                return;
+                player.setFoodLevel(19);
+                return true;
             }
 
             PointManager.addPoints(player, 1);
             ScoreboardManager1.updateScoreboard(player);
+            player.setFoodLevel(19);
+            return true;
         }
-    }
-
-
-    public static Location getRandomLocationWithinRadius(Location center, double radius) {
-        Random random = new Random();
-        double randomAngle = random.nextDouble() * Math.PI * 2;
-        double randomRadius = random.nextDouble() * radius;
-        double randomYOffset = random.nextDouble() * 10 - 5; // Random offset within a range of -5 to 5
-
-        double offsetX = Math.cos(randomAngle) * randomRadius;
-        double offsetZ = Math.sin(randomAngle) * randomRadius;
-
-        return center.clone().add(offsetX, randomYOffset, offsetZ);
+        return false;
     }
 
 }

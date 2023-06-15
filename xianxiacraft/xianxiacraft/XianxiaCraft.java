@@ -10,12 +10,14 @@ import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.QiManagers.ManualManager;
 import xianxiacraft.xianxiacraft.commands.CultPassiveCommandExecutor;
 import xianxiacraft.xianxiacraft.handlers.HitEvents;
+import xianxiacraft.xianxiacraft.handlers.ItemDropEvents;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
 import xianxiacraft.xianxiacraft.handlers.PointHandler;
-import xianxiacraft.xianxiacraft.util.FreezeEffect;
+import xianxiacraft.xianxiacraft.util.ManualItems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class XianxiaCraft extends JavaPlugin {
@@ -40,30 +42,42 @@ public final class XianxiaCraft extends JavaPlugin {
         new ScoreboardManager1(this);
         new PointHandler(this);
         new HitEvents(this);
+        new ItemDropEvents(this);
 
         //command logic
         CultPassiveCommandExecutor cultPassiveCommandExecutor = new CultPassiveCommandExecutor();
         getCommand("qipunch").setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("tutorial")).setExecutor(cultPassiveCommandExecutor);
+
+
+        //item adding logic
+        ManualItems.init();
 
 
         //initialize every manual in the game here.
         IronSkinManual ironSkinManual = new IronSkinManual();
         FattyManual fattyManual = new FattyManual();
         IceManual iceManual = new IceManual();
-        PheonixManual pheonixManual = new PheonixManual();
+        PhoenixManual phoenixManual = new PhoenixManual();
         SpaceManual spaceManual = new SpaceManual();
         SugarFiendManual sugarFiendManual = new SugarFiendManual();
         VampireManual vampireManual = new VampireManual();
+        PoisonManual poisonManual = new PoisonManual();
+        FungalManual fungalManual = new FungalManual();
+        LightningManual lightningManual = new LightningManual();
 
         //list of the manuals (MAKE SURE TO UPDATE THIS AND THE ONE IN MANUALMANAGER AS MORE ARE ADDED)
         List<Object> manualList = new ArrayList<>();
         manualList.add(ironSkinManual);
         manualList.add(fattyManual);
         manualList.add(iceManual);
-        manualList.add(pheonixManual);
+        manualList.add(phoenixManual);
         manualList.add(spaceManual);
         manualList.add(sugarFiendManual);
         manualList.add(vampireManual);
+        manualList.add(poisonManual);
+        manualList.add(fungalManual);
+        manualList.add(lightningManual);
 
 
 
@@ -108,7 +122,7 @@ public final class XianxiaCraft extends JavaPlugin {
                             if(ManualManager.getManual(player).equals(manual.getManualName())){
                                 qiRegenPercent = manual.getQiRegeneration();
                                 if(currentQi < maxQi){
-                                    if((currentQi + (int) (maxQi*manual.getQiRegeneration())) > maxQi){
+                                    if((currentQi + (int) (maxQi*qiRegenPercent)) > maxQi){
                                         QiManager.setQi(player,maxQi);
                                     } else {
                                         QiManager.addQi(player,(int) Math.ceil(maxQi*manual.getQiRegeneration()));

@@ -29,7 +29,7 @@ public class ManualManager implements Listener {
     public static Map<UUID, String> manualsMap = new HashMap<>();
 
     //every manual in the game (MAKE SURE TO UPDATE AS MORE ARE ADDED)
-    public static List<Object> manualList1 = new ArrayList<Object>(Arrays.asList(new IronSkinManual(),new FattyManual(),new IceManual(), new PheonixManual(), new SpaceManual(), new SugarFiendManual(), new VampireManual())); //make sure to populate this
+    public static List<Object> manualList1 = new ArrayList<Object>(Arrays.asList(new IronSkinManual(),new FattyManual(),new IceManual(), new PhoenixManual(), new SpaceManual(), new SugarFiendManual(), new VampireManual(),new PoisonManual(),new FungalManual(),new LightningManual())); //make sure to populate this
 
 
     public ManualManager(XianxiaCraft plugin){

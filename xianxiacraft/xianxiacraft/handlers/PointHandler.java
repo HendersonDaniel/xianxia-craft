@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
@@ -15,12 +17,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
-import xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual;
-import xianxiacraft.xianxiacraft.handlers.Manuals.IceManual;
-import xianxiacraft.xianxiacraft.handlers.Manuals.IronSkinManual;
+import xianxiacraft.xianxiacraft.handlers.Manuals.*;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
+import static xianxiacraft.xianxiacraft.handlers.Manuals.PhoenixManual.phoenixManualPointIncrement;
 
 
 public class PointHandler implements Listener {
@@ -39,6 +40,7 @@ public class PointHandler implements Listener {
     // }
 
 
+
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event){
 
@@ -47,10 +49,16 @@ public class PointHandler implements Listener {
         String manual = getManual(player);
 
         //ironskin manual
-        if(manual.equals("Ironskin Manual")){
-            IronSkinManual.ironSkinManualPointIncrement(itemInHand,player);
-        } else if(manual.equals("Ice Manual")){
-            IceManual.iceManualPointIncrement(itemInHand,player);
+        switch (manual) {
+            case "Ironskin Manual":
+                IronSkinManual.ironSkinManualPointIncrement(itemInHand, player);
+                break;
+            case "Ice Manual":
+                IceManual.iceManualPointIncrement(itemInHand, player);
+                break;
+            case "LightningManual":
+                LightningManual.lightningManualPointIncrement(itemInHand, player);
+                break;
         }
 
 
@@ -72,42 +80,45 @@ public class PointHandler implements Listener {
         //fatty manual
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
+        String manual = getManual(player);
 
+        if(!item.getType().isEdible()){
+            return;
+        }
 
-        if(getManual(player).equals("Fatty Manual") && item.getType().isEdible()){
-            FattyManual.fattyManualPointIncrement(player,item);
-            event.setCancelled(true);
-
+        switch (manual) {
+            case "Fatty Manual":
+                FattyManual.fattyManualPointIncrement(player, item);
+                event.setCancelled(true);
+                break;
+            case "Poison Manual":
+                event.setCancelled(PoisonManual.poisonManualPointIncrement(player, item));
+                break;
+            case "Space Manual":
+                SpaceManual.spaceManualPointIncrement(player, item);
+                break;
+            case "Sugar Fiend":
+                SugarFiendManual.sugarFiendManualPointIncrement(player,item);
+                break;
+            case "Fungal Manual":
+                FungalManual.fungalManualPointIncrement(player,item);
+                break;
         }
     }
 
-/*
-    public static void updateCultPerms(Player player){
-
-        int stage = getStage(player);
-
-
-        //put command perms in this
-        switch (stage){
-            default:
-
-            case 10:
-            case 9:
-            case 8:
-            case 7:
-            case 6:
-            case 5:
-            case 4:
-            case 3:
-            case 2:
-            case 1:
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event){
+        Player player = event.getEntity();
 
 
-
+        if(getManual(player).equals("Phoenix Manual")){
+            PhoenixManual.phoenixManualPointIncrement(player);
         }
 
+
+
     }
-*/
+
 
 
 }
