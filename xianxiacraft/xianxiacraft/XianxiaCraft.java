@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import xianxiacraft.xianxiacraft.customItems.ToolItems;
@@ -21,7 +20,7 @@ import xianxiacraft.xianxiacraft.util.ManualItems;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManualQiRegen;
@@ -37,7 +36,6 @@ public final class XianxiaCraft extends JavaPlugin {
     ManualManager manualManager;
     QiManager qiManager;
 
-    private int taskId;
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -61,20 +59,20 @@ public final class XianxiaCraft extends JavaPlugin {
 
         //command logic
         CultPassiveCommandExecutor cultPassiveCommandExecutor = new CultPassiveCommandExecutor();
-        getCommand("qipunch").setExecutor(cultPassiveCommandExecutor);
-        getCommand("cultutorial").setExecutor(cultPassiveCommandExecutor);
-        getCommand("qimine").setExecutor(cultPassiveCommandExecutor);
-        getCommand("qimove").setExecutor(cultPassiveCommandExecutor);
-        getCommand("detonate").setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("qipunch")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("cultutorial")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("qimine")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("qimove")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("detonate")).setExecutor(cultPassiveCommandExecutor);
 
         OperatorCommands operatorCommands = new OperatorCommands();
-        getCommand("addstage").setExecutor(operatorCommands);
-        getCommand("checkstats").setExecutor(operatorCommands);
-        getCommand("obtain").setExecutor(operatorCommands);
+        Objects.requireNonNull(getCommand("addstage")).setExecutor(operatorCommands);
+        Objects.requireNonNull(getCommand("checkstats")).setExecutor(operatorCommands);
+        Objects.requireNonNull(getCommand("obtain")).setExecutor(operatorCommands);
 
 
         //custom tools using PersistentDataContainer
-        ToolItems toolItems = new ToolItems(this);
+        new ToolItems(this);
         //item adding logic
         ManualItems.init();
         ToolItems.init2();
@@ -107,8 +105,8 @@ public final class XianxiaCraft extends JavaPlugin {
         manualList.add(lightningManual);
 
 
-
-        taskId = new BukkitRunnable() {
+        // Code to be executed every 3 seconds
+        int taskId = new BukkitRunnable() {
             @Override
             public void run() {
                 // Code to be executed every 3 seconds
@@ -136,7 +134,7 @@ public final class XianxiaCraft extends JavaPlugin {
 
     private void updateQiLevels(List<Object> manualList) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            UUID playerId = player.getUniqueId();
+
             String playerManual = getManual(player);
 
             if (!(playerManual.equals("none"))) {

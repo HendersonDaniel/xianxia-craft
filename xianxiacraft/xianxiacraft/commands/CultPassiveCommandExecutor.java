@@ -94,7 +94,12 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
                 sender.removePotionEffect(PotionEffectType.FAST_DIGGING);
             } else {
                 sender.sendMessage(ChatColor.GOLD + "QiMine: Active");
-                sender.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE,(int) (getStage(sender)/2.0)-1,false,false,false));
+                //max haste is 4 because any higher causes glitches
+                int amplifier = (int) (getStage(sender)/2.0)-1;
+                if (amplifier > 4){
+                    amplifier = 4;
+                }
+                sender.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE,amplifier,false,false,false));
             }
 
             TechniqueManager.setMineBool(sender,!currentMineBool);
