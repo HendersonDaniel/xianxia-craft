@@ -1,11 +1,8 @@
 package xianxiacraft.xianxiacraft.util;
 
-import com.sun.tools.javac.jvm.Items;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class ManualItems {
 
@@ -47,13 +44,10 @@ public class ManualItems {
         bookMeta.addPage("Welcome to Spellslot's (Daniel's) XianxiaCraft!\n" +
                 "\n" +
                 "To get started, find and use a Cultivation Manual! They have a chance of dropping from certain mobs like:\n" +
-                "\n" +
-                "Pigs,Piglins,Blazes,Mooshroom Cows,Villagers,Iron Golems,Cave Spiders,Endermen,Strays.");
+                "Pigs,Piglins,Blazes,Mooshroom Cows,Villagers,Iron Golems,Cave Spiders,Endermen,Strays,Creepers.");
         bookMeta.addPage("After you have a manual, just follow it!\n" +
                 "\n" +
                 "The chances of a manual dropping from a mob are currently 2%. \n" +
-                "\n" +
-                "Lightning Manual is gotten by killing creepers (give better suggestions...). \n" +
                 "\n" +
                 "This is a test run so that I can understand the power level of the manuals currently.");
         bookMeta.addPage("This is still a work in progress. Please report any bugs to danialdamanual on discord.");
@@ -95,7 +89,7 @@ public class ManualItems {
 
 
         assert bookMeta != null;
-        bookMeta.setTitle("Lightning Manual");
+        bookMeta.setTitle("LightningManual");
         bookMeta.setAuthor("Spellslot");
         bookMeta.setDisplayName("Lightning Emperor's Legacy");
         bookMeta.addPage("Right now you are below the Heavens, but one day, you will BE the Heavens. \n" +
@@ -158,7 +152,7 @@ public class ManualItems {
                 "At this stage you will find that you can infuse qi into your attacks, causing them to do more damage. \n" +
                 "\n" +
                 "Type /qipunch to toggle this technique. It requires 10 qi per attack.");
-        bookMeta.addPage("more techniques will be added later");
+        bookMeta.addPage("Stage 3:\n\nAt this stage you can imbue you qi into your movements.\n\nType /qimove to toggle this technique. It requires 4 qi per second.");
 
         item.setItemMeta(bookMeta);
         sugarFiendManualItem = item;
@@ -178,7 +172,7 @@ public class ManualItems {
         bookMeta.addPage("Stage 1:\n" +
                 "\n" +
                 "Listen, young disciple, for I shall impart upon you the esoteric knowledge of infusing qi into your very fists. A technique that shall unleash the boundless potential within you. Prepare to embark on this journey of enlightenment:/qipunch");
-        bookMeta.addPage("more techniques will be added later");
+        bookMeta.addPage("Stage 3:\n\nAt this stage you can use qi to teleport short distances.\n\nType /qimove to toggle this technique. Right click with any item (like a sword) in hand to teleport.");
 
         item.setItemMeta(bookMeta);
         spaceManualItem = item;
@@ -197,7 +191,7 @@ public class ManualItems {
                 "\n" +
                 "Eat poisonous foods like spider eyes and puffer fish to cultivate. Potions don't count.\n" +
                 "\n" +
-                "Poison no longer damages you. ");
+                "Poison no longer damages you. You gain a huge defense while poisoned");
         bookMeta.addPage("To breakthrough to the next stage, you must cultivate in a swamp biome. \n");
         bookMeta.addPage("Stage 1:\n" +
                 "\n" +
@@ -225,7 +219,7 @@ public class ManualItems {
                 "The Phoenix is reborn again stronger after every death, the knowledge of their experience aiding them in their new life. \n" +
                 "\n" +
                 "Die with XP levels to cultivate.");
-        bookMeta.addPage("To breakthrough to the next stage, die with 10 times stage levels of experience.\n" +
+        bookMeta.addPage("Fire no longer damages you. While on fire, most things cannot hurt you.\n\nTo breakthrough to the next stage, die with 10 times stage levels of experience.\n" +
                 "\n");
         bookMeta.addPage("Stage 1:\n" +
                 "\n" +
@@ -257,7 +251,7 @@ public class ManualItems {
                 "At this stage you will find that you can infuse qi into your attacks, causing YOUR FISTS TO BE HARDER! \n" +
                 "\n" +
                 "Type /qipunch to toggle this technique. It requires 10 qi per attack.");
-        bookMeta.addPage("more techniques will be added later");
+        bookMeta.addPage("Stage 3:\n\nAt this stage you can imbue you qi into your movements.\n\nType /qimove to toggle this technique.");
 
         item.setItemMeta(bookMeta);
         ironSkinManualItem = item;
@@ -307,7 +301,7 @@ public class ManualItems {
                 "\n" +
                 "To toggle this technique, type /qipunch.");
         //to be continued
-        bookMeta.addPage("more techniques will be added later");
+        bookMeta.addPage("Stage 3:\n\nAt this stage you can imbue you qi into your body and not take knockback.\n\nType /qimove to toggle this technique. It requires 4 qi per second.");
 
         item.setItemMeta(bookMeta);
         fattyManualItem = item;

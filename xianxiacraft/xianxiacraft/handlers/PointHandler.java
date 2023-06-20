@@ -6,22 +6,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
-import xianxiacraft.xianxiacraft.QiManagers.PointManager;
-import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
-import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
-import static xianxiacraft.xianxiacraft.handlers.Manuals.PhoenixManual.phoenixManualPointIncrement;
 
 
 public class PointHandler implements Listener {
@@ -71,7 +63,7 @@ public class PointHandler implements Listener {
         String manual = getManual(player);
 
         if(manual.equals("Ice Manual") && event.getBlockPlaced().getType() == Material.ICE){
-            event.setCancelled(true);
+            event.setCancelled(true); //this can be changed to subtracting 1 from the itemstack.
         }
     }
 
@@ -98,10 +90,10 @@ public class PointHandler implements Listener {
                 SpaceManual.spaceManualPointIncrement(player, item);
                 break;
             case "Sugar Fiend":
-                SugarFiendManual.sugarFiendManualPointIncrement(player,item);
+                event.setCancelled(SugarFiendManual.sugarFiendManualPointIncrement(player,item));
                 break;
             case "Fungal Manual":
-                FungalManual.fungalManualPointIncrement(player,item);
+                event.setCancelled(FungalManual.fungalManualPointIncrement(player,item));
                 break;
         }
     }

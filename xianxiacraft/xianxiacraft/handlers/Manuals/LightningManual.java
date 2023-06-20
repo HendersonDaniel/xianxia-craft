@@ -26,7 +26,7 @@ public class LightningManual extends Manual{
             //fix equation to work all the time FIXED
             //points + 1 ==  (int) (20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20)
             if(points + 1 ==  (int) (20 * Math.pow(2,(stage+1)) - 20)){
-                if(!(CountNearbyBlocks.countNearbyBlocks(player,Material.COPPER_BLOCK) >= (Math.pow(2,stage-1)))){
+                if(!((CountNearbyBlocks.countNearbyBlocks(player,Material.COPPER_BLOCK) + CountNearbyBlocks.countNearbyBlocks(player,Material.WAXED_COPPER_BLOCK)) >= (Math.pow(2,stage-1)))){
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                     return;

@@ -64,7 +64,7 @@ public class PointManager implements Listener {
         //working but not to the degree I want
         //double percentage = 100*(points/(20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20));
 
-        double variable1 = 20 * Math.pow(10, (stage) * Math.log10(2)) - 20;
+        double variable1 = 20 * Math.pow(2, stage) - 20;
         double percentage = 100 * (points - variable1) / ((20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20) - variable1);
 
 

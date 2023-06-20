@@ -20,7 +20,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.setPunchBool;
+import static xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1.updateScoreboard;
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
 
 public class ManualManager implements Listener {
 
@@ -73,6 +74,21 @@ public class ManualManager implements Listener {
         return 0;
     }
 
+    public static double getManualQiRegen(String manualName){
+        for(Object object : manualList1){
+            if(object instanceof Manual){
+                Manual manual = (Manual) object;
+                if(!(manual.getManualName().equals("none"))){
+                    if(manual.getManualName().equals(manualName)){
+                        return manual.getQiRegeneration();
+                    }
+                }
+            }
+        }
+        //default for players with no manual.
+        return 0.0;
+    }
+
 
     //remember to add the update perm thing
     @EventHandler
@@ -99,6 +115,9 @@ public class ManualManager implements Listener {
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Cultivation Manual changed to " + bookTitle + ".\nCultivation has been reset.");
                         //set all technique commands to false
                         setPunchBool(event.getPlayer(),false);
+                        setMoveBool(event.getPlayer(),false);
+                        setMineBool(event.getPlayer(),false);
+                        updateScoreboard(event.getPlayer());
 
                         // Prevent the book from being opened when right-clicked
                         event.setCancelled(true);

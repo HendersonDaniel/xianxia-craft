@@ -1,7 +1,5 @@
 package xianxiacraft.xianxiacraft.handlers.Manuals;
 
-import org.bukkit.event.Listener;
-
 public class Manual {
 
     private String name;

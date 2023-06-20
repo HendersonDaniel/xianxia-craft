@@ -2,9 +2,10 @@ package xianxiacraft.xianxiacraft.handlers.Manuals;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 
@@ -15,9 +16,18 @@ import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks
 public class SugarFiendManual extends Manual{
 
     public SugarFiendManual(){
-        super("Sugar Fiend",0.01,5,4);
+        super("Sugar Fiend",0.05,5,4);
     }
 
+
+
+    public static void sugarFiendQiMove(Player player,boolean bool){
+        if(bool){
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE,getStage(player),false,false,false));
+        } else{
+            player.removePotionEffect(PotionEffectType.SPEED);
+        }
+    }
 
     public static boolean sugarFiendManualPointIncrement(Player player, ItemStack item) {
 

@@ -2,15 +2,11 @@ package xianxiacraft.xianxiacraft.handlers.Manuals;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.util.CountNearbyBlocks;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
@@ -27,6 +23,7 @@ public class IronSkinManual extends Manual {
         super("Ironskin Manual",0.01,4,6);
 
     }
+
 
 
 

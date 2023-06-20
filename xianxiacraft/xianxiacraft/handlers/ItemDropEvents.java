@@ -5,9 +5,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 
 import static xianxiacraft.xianxiacraft.util.ManualItems.*;
@@ -48,6 +46,8 @@ public class ItemDropEvents implements Listener {
                 event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), sugarFiendManualItem);
             } else if(entityType == EntityType.CREEPER){
                 event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), lightningManualItem);
+            } else if(entityType == EntityType.IRON_GOLEM){
+                event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), ironSkinManualItem);
             }
         }
     }

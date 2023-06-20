@@ -3,7 +3,7 @@ package xianxiacraft.xianxiacraft.util;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
+import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,6 +20,18 @@ public class FreezeEffect {
     }
 
     private static final int FREEZE_DURATION_PER_STAGE = 7; //7 sec per stage
+
+    public static void createIce(Location location) {
+        Block block = location.getBlock();
+        block.setType(Material.ICE);
+    }
+
+    public static void removeIce(Location location) {
+        Block block = location.getBlock();
+        if (block.getType() == Material.ICE) {
+            block.setType(Material.AIR);
+        }
+    }
 
     public void applyFreezeDamage(LivingEntity target, Player attacker) {
         // Store the player's current location

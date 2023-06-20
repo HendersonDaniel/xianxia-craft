@@ -3,35 +3,30 @@ package xianxiacraft.xianxiacraft.handlers;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 import xianxiacraft.xianxiacraft.handlers.Manuals.SpaceManual;
 import xianxiacraft.xianxiacraft.util.CountNearbyBlocks;
 import xianxiacraft.xianxiacraft.util.FreezeEffect;
 
-import java.util.Objects;
-
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.*;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.*;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.subtractQi;
+import static xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1.updateScoreboard;
 import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.getPunchBool;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.VampireManual.demonicManualManualPointIncrement;
+import static xianxiacraft.xianxiacraft.util.FungalBlockData.*;
 
 public class HitEvents implements Listener {
 
@@ -52,9 +47,9 @@ public class HitEvents implements Listener {
 
         if(getManual(player).equals("Fungal Manual")) {
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                if (getPunchBool(player) && getQi(player) >= 10) {
-                    subtractQi(player, 10);
-                    ScoreboardManager1.updateScoreboard(player);
+                if (getPunchBool(player) && getQi(player) >= 20) {
+                    subtractQi(player, 20);
+                    updateScoreboard(player);
 
                     int radius = getStage(player);
 
@@ -64,8 +59,43 @@ public class HitEvents implements Listener {
                             for (int y = -radius; y <= radius; y++) {
                                 for (int z = -radius; z <= radius; z++) {
                                     Block targetBlock = clickedBlock.getRelative(x, y, z);
-                                    if (targetBlock.getType() != Material.AIR) {
+                                    Material targetBlockType = targetBlock.getType();
+
+                                    if(checkMycelium(targetBlockType)){
                                         targetBlock.setType(Material.MYCELIUM);
+                                    } else if(checkMushroom(targetBlockType)){
+                                        targetBlock.setType(Material.RED_MUSHROOM_BLOCK);
+                                    } else if(checkStem(targetBlockType)){
+                                        targetBlock.setType(Material.MUSHROOM_STEM);
+                                    } else if(targetBlockType == Material.GRASS || targetBlockType == Material.TALL_GRASS){
+                                        targetBlock.setType(Material.AIR);
+                                    } else if(checkToMushroomFlower(targetBlockType)){
+                                        targetBlock.setType(Material.RED_MUSHROOM);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if(getPunchBool(player)){
+                    player.sendMessage(ChatColor.GOLD + "You did not have enough qi to augment your punch.");
+                }
+            }
+        } else if(getManual(player).equals("Ironskin Manual")){
+            if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                if (getPunchBool(player) && getQi(player) >= 10) {
+                    subtractQi(player, 10);
+                    updateScoreboard(player);
+
+                    int radius = (int) Math.ceil(getStage(player)/2.0);
+
+                    Block clickedBlock = event.getClickedBlock();
+                    if (clickedBlock != null) {
+                        for (int x = -radius; x <= radius; x++) {
+                            for (int y = -radius; y <= radius; y++) {
+                                for (int z = -radius; z <= radius; z++) {
+                                    Block targetBlock = clickedBlock.getRelative(x, y, z);
+                                    if (targetBlock.getType() != Material.AIR) {
+                                        targetBlock.setType(Material.AIR);
                                     }
                                 }
                             }
@@ -97,7 +127,7 @@ public class HitEvents implements Listener {
             //PUNCHING TECHNIQUES EFFECTS
             if (getPunchBool(attackingPlayer) && getQi(attackingPlayer) >= 10) {
                 subtractQi(attackingPlayer, 10);
-                ScoreboardManager1.updateScoreboard(attackingPlayer);
+                updateScoreboard(attackingPlayer);
 
                 //check for manual type
                 switch (attackingPlayerManual) {
@@ -131,8 +161,8 @@ public class HitEvents implements Listener {
                     }
                     case "Poison Manual": {
                         LivingEntity target = (LivingEntity) event.getEntity();
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.POISON,20*5,getStage(attackingPlayer)));
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,20*5,getStage(attackingPlayer)));
+                        target.addPotionEffect(new PotionEffect(PotionEffectType.POISON,20*5 + 5*getStage(attackingPlayer),getStage(attackingPlayer)));
+                        target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,20*10 + 20*getStage(attackingPlayer),getStage(attackingPlayer)));
                         break;
                     }
                     case "Space Manual": {
@@ -162,9 +192,12 @@ public class HitEvents implements Listener {
             }
 
             //fungal manual buff if in biome
-            if(CountNearbyBlocks.countNearbyBlocks(attackingPlayer,Material.MYCELIUM)>=1){
-                attackDamage *= 2;
+            if(attackingPlayerManual.equals("Fungal Manual")){
+                if(CountNearbyBlocks.countNearbyBlocks(attackingPlayer,Material.MYCELIUM)>=1){
+                    attackDamage += 2*attackingPlayerStage;
+                }
             }
+
 
 
             //check for if target is player or not and respond accordingly
@@ -204,6 +237,8 @@ public class HitEvents implements Listener {
 
                 setPoints(defendingPlayer,points1-leeched);
                 addPoints(attackingPlayer,leeched);
+                updateScoreboard(defendingPlayer);
+                updateScoreboard(attackingPlayer);
 
             }
 
@@ -241,6 +276,22 @@ public class HitEvents implements Listener {
                 event.setDamage(resultDamage);
             } else {
                 //minimum damage for PvE
+                event.setDamage(0);
+            }
+        } else if(((event.getDamager() instanceof Projectile) || event.getDamager() instanceof Explosive) && (event.getEntity() instanceof Player)){
+            Player defendingPlayer = (Player) event.getEntity();
+            String defendingPlayerManual = getManual(defendingPlayer);
+            int defendingPlayerStage = getStage(defendingPlayer);
+
+            double defense = defendingPlayerStage * getManualDefensePerStage(defendingPlayerManual);
+            double damage = event.getDamage();
+
+            double resultDamage = damage - defense;
+
+            if(resultDamage > 0){
+                event.setDamage(resultDamage);
+            } else {
+                //minimum damage for PvE
                 event.setDamage(1);
             }
         }
@@ -249,6 +300,7 @@ public class HitEvents implements Listener {
     }
 
     //Environment vs player
+
 
     @EventHandler
     public void onPlayerTakeDamage(EntityDamageEvent event){
@@ -261,12 +313,12 @@ public class HitEvents implements Listener {
         String defendingPlayerManual = getManual(defendingPlayer);
         int defendingPlayerStage = getStage(defendingPlayer);
 
-        if(defendingPlayerManual.equals("Phoenix Manual") && defendingPlayer.getFireTicks() > 0 ){
+        if(defendingPlayerManual.equals("Phoenix Manual") && (event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK)){
             event.setCancelled(true);
             return;
         }
 
-        if(defendingPlayerManual.equals("Ice Manual") && defendingPlayer.getFreezeTicks() > 0){
+        if(defendingPlayerManual.equals("Ice Manual") && (event.getCause() == EntityDamageEvent.DamageCause.FREEZE)){
             event.setCancelled(true);
             return;
         }
