@@ -328,7 +328,7 @@ public class HitEvents implements Listener {
         String defendingPlayerManual = getManual(defendingPlayer);
         int defendingPlayerStage = getStage(defendingPlayer);
 
-        if(defendingPlayerManual.equals("Phoenix Manual") && (event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK)){
+        if(defendingPlayerManual.equals("Phoenix Manual") && (event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.HOT_FLOOR)){
             event.setCancelled(true);
             return;
         }

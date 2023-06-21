@@ -15,6 +15,7 @@ import xianxiacraft.xianxiacraft.XianxiaCraft;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
@@ -46,6 +47,9 @@ public class MoveEvents implements Listener {
     }
 
     private Map<Block,Material> originalBlocks = new HashMap<>();
+
+    private Map<UUID,Boolean> isCleanedMap = new HashMap<>();
+    //boolean isCleaned = true;
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
@@ -79,8 +83,11 @@ public class MoveEvents implements Listener {
         }
 
         //qiaura stuff
+
         if(getAuraBool(player)){
             String playerManual = getManual(player);
+            isCleanedMap.put(player.getUniqueId(),false);
+            //isCleaned = false;
 
             Material blockType1;
             Material blockType2;
@@ -145,9 +152,6 @@ public class MoveEvents implements Listener {
             //revert changes
             for (Block block1 : originalBlocks.keySet()) {
                 block1.setType(originalBlocks.get(block1));
-                //if((centerX - block1.getX()) * (centerX - block1.getX()) + (centerY - block1.getY()) * (centerY - block1.getY()) + (centerZ - block1.getZ()) * (centerZ - block1.getZ()) > radius*radius){
-                // block1.setType(originalBlocks.get(block1));
-                //}
             }
             originalBlocks.clear();
 
@@ -182,10 +186,16 @@ public class MoveEvents implements Listener {
 
 
 
-
-
         }
-
+        if((!getAuraBool(player)) && (!isCleanedMap.getOrDefault(player.getUniqueId(),true))){
+            //revert changes
+            for (Block block1 : originalBlocks.keySet()) {
+                block1.setType(originalBlocks.get(block1));
+            }
+            originalBlocks.clear();
+            isCleanedMap.put(player.getUniqueId(),true);
+            //isCleaned = true;
+        }
 
     }
 
