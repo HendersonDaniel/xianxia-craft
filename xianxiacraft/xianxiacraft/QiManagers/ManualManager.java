@@ -117,6 +117,7 @@ public class ManualManager implements Listener {
                         setPunchBool(event.getPlayer(),false);
                         setMoveBool(event.getPlayer(),false);
                         setMineBool(event.getPlayer(),false);
+                        setAuraBool(event.getPlayer(),false);
                         updateScoreboard(event.getPlayer());
 
                         // Prevent the book from being opened when right-clicked

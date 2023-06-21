@@ -6,21 +6,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.subtractQi;
 import static xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1.updateScoreboard;
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.getAuraBool;
 import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.getMoveBool;
-import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
 import static xianxiacraft.xianxiacraft.util.FreezeEffect.createIce;
 import static xianxiacraft.xianxiacraft.util.FreezeEffect.removeIce;
 
@@ -34,6 +37,15 @@ public class MoveEvents implements Listener {
         this.plugin = plugin;
     }
 
+    @EventHandler
+    public void onPlayerMine(BlockBreakEvent event){
+        //so that players cant infinitely farm their aura blocks.
+        if(getAuraBool(event.getPlayer())){
+            event.setCancelled(true);
+        }
+    }
+
+    private Map<Block,Material> originalBlocks = new HashMap<>();
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
@@ -41,14 +53,6 @@ public class MoveEvents implements Listener {
 
         if(getMoveBool(player)){
             String playerManual = getManual(player);
-
-            /*if(playerManual.equals("Fungal Manual")){
-
-                if(countNearbyBlocks(player, Material.MYCELIUM,2) > 0){
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 40,1,false,false,false));
-                }
-
-            } else */
 
             if(playerManual.equals("Ice Manual")){
                 if(!player.isSneaking()) {
@@ -66,28 +70,123 @@ public class MoveEvents implements Listener {
                         }
                     }
 
-
-                    /*
-                    Location[] locations = new Location[7];
-
-                    Location location1 = player.getLocation().subtract(0, 1, 0);
-
-                    locations[0] = player.getLocation().subtract(0, 1, 0);
-                    locations[1] = player.getLocation().subtract(1, 1, 0);
-                    locations[2] = player.getLocation().subtract(0, 1, 1);
-                    locations[3] = location1.add(1, 0, 0);
-                    locations[4] = location1.add(0, 0, 1);
-                    locations[5] = location1.add(1,0,1);
-                    locations[6] = player.getLocation().subtract(1,1,1);
-                    */
                     for (Location location : locations) {
                         createIce(location);
                         Bukkit.getScheduler().runTaskLater(plugin, () -> removeIce(location), 100);
                     }
                 }
             }
+        }
+
+        //qiaura stuff
+        if(getAuraBool(player)){
+            String playerManual = getManual(player);
+
+            Material blockType1;
+            Material blockType2;
+
+            switch(playerManual){
+                case "Ice Manual":
+                    blockType1 = Material.PACKED_ICE;
+                    blockType2 = Material.BLUE_ICE;
+                    break;
+                case "Sugar Fiend":
+                    blockType1 = Material.NETHERRACK;
+                    blockType2 = Material.NETHER_QUARTZ_ORE;
+                    break;
+                case "Fatty Manual":
+                    blockType1 = Material.DIRT;
+                    blockType2 = Material.COARSE_DIRT;
+                    break;
+                case "Fungal Manual":
+                    blockType1 = Material.MYCELIUM;
+                    blockType2 = Material.MYCELIUM;
+                    break;
+                case "Ironskin Manual":
+                    blockType1 = Material.RAW_IRON_BLOCK;
+                    blockType2 = Material.IRON_BLOCK;
+                    break;
+                case "LightningManual":
+                    blockType1 = Material.RAW_COPPER_BLOCK;
+                    blockType2 = Material.COPPER_BLOCK;
+                    break;
+                case "Phoenix Manual":
+                    blockType1 = Material.HONEYCOMB_BLOCK;
+                    blockType2 = Material.MAGMA_BLOCK;
+                    break;
+                case "Poison Manual":
+                    blockType1 = Material.WARPED_HYPHAE;
+                    blockType2 = Material.MANGROVE_ROOTS;
+                    break;
+                case "Space Manual":
+                    blockType1 = Material.BLACK_CONCRETE;
+                    blockType2 = Material.END_STONE;
+                    break;
+                case "Demonic Manual":
+                    blockType1 = Material.SCULK;
+                    blockType2 = Material.SCULK;
+                    break;
+                default:
+                    blockType1 = Material.AIR;
+                    blockType2 = Material.AIR;
+            }
+
+
+            Location center = player.getLocation().clone().subtract(0,1,0);
+
+            int radius = 4;
+
+            World world = center.getWorld();
+            int centerX = center.getBlockX();
+            int centerY = center.getBlockY();
+            int centerZ = center.getBlockZ();
+
+
+            //revert changes
+            for (Block block1 : originalBlocks.keySet()) {
+                block1.setType(originalBlocks.get(block1));
+                //if((centerX - block1.getX()) * (centerX - block1.getX()) + (centerY - block1.getY()) * (centerY - block1.getY()) + (centerZ - block1.getZ()) * (centerZ - block1.getZ()) > radius*radius){
+                // block1.setType(originalBlocks.get(block1));
+                //}
+            }
+            originalBlocks.clear();
+
+
+            for (int x = centerX - radius; x <= centerX + radius; x++) {
+                for (int y = centerY - radius; y <= centerY + radius; y++) {
+                    for (int z = centerZ - radius; z <= centerZ + radius; z++) {
+                        int i = (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y) + (centerZ - z) * (centerZ - z);
+                        if (i <= radius*radius) {
+                            assert world != null;
+                            Block block = world.getBlockAt(x, y, z);
+
+                            originalBlocks.put(block, block.getType());
+
+                            // make sure it isn't air or bedrock
+                            if(block.getType() != Material.AIR && block.getType() != Material.CAVE_AIR && block.getType() != Material.BEDROCK && block.getType() != blockType1 && block.getType() != blockType2){
+
+                                int blockOrNoBlock = (int) (Math.random() * 5);
+
+                                if(blockOrNoBlock == 1){
+                                    block.setType(blockType2);
+                                } else {
+                                    block.setType(blockType1);
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+
+
+
 
         }
+
+
     }
 
     @EventHandler

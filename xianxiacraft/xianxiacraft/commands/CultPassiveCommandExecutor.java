@@ -14,6 +14,8 @@ import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getMaxQi;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.setQi;
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.getAuraBool;
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.qiAuraGlow;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual.fattyManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.SugarFiendManual.sugarFiendQiMove;
@@ -96,8 +98,8 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
                 sender.sendMessage(ChatColor.GOLD + "QiMine: Active");
                 //max haste is 4 because any higher causes glitches
                 int amplifier = (int) (getStage(sender)/2.0)-1;
-                if (amplifier > 4){
-                    amplifier = 4;
+                if (amplifier > 3){
+                    amplifier = 3;
                 }
                 sender.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE,amplifier,false,false,false));
             }
@@ -138,8 +140,26 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
                     fungalManualQiMove(sender,TechniqueManager.getMoveBool(sender));
                     break;
             }
+            return true;
+        }
 
+        //QiAura
+        if(command.getName().equalsIgnoreCase("qiaura")){
+            if(!(getStage(sender) >= 6)){
+                sender.sendMessage(ChatColor.GOLD + "Must have Stage 6 or above cultivation base to use this technique.");
+                return true;
+            }
 
+            boolean currentAuraBool = TechniqueManager.getAuraBool(sender);
+
+            if(currentAuraBool){
+                sender.sendMessage(ChatColor.GOLD + "QiAura: Inactive");
+            } else {
+                sender.sendMessage(ChatColor.GOLD + "QiAura: Active");
+            }
+
+            TechniqueManager.setAuraBool(sender,!currentAuraBool);
+            qiAuraGlow(sender,getAuraBool(sender));
             return true;
         }
 

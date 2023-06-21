@@ -24,7 +24,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.PointManager.*;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.subtractQi;
 import static xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1.updateScoreboard;
-import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.getPunchBool;
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.VampireManual.demonicManualManualPointIncrement;
 import static xianxiacraft.xianxiacraft.util.FungalBlockData.*;
 
@@ -202,6 +202,7 @@ public class HitEvents implements Listener {
 
             //check for if target is player or not and respond accordingly
             if (!(event.getEntity() instanceof Player)) {
+
                 event.setDamage(attackDamage);
                 if(attackingPlayerManual.equals("Demonic Manual")){
                     demonicManualManualPointIncrement(attackingPlayer,(LivingEntity) event.getEntity());
@@ -209,13 +210,21 @@ public class HitEvents implements Listener {
                 return;
             }
 
+
+
             Player defendingPlayer = (Player) event.getEntity();
             String defendingPlayerManual = getManual(defendingPlayer);
             int defendingPlayerStage = getStage(defendingPlayer);
 
             double defense = defendingPlayerStage * getManualDefensePerStage(defendingPlayerManual);
 
+            //qiaura boosts
+            if(getAuraBool(defendingPlayer)){
+                defense *= 2;
+            }
+
             double resultAttackDamage = attackDamage - defense;
+
 
 
 
@@ -225,6 +234,7 @@ public class HitEvents implements Listener {
                 //minimum attack
                 event.setDamage(1);
             }
+
 
             //demonic manual leeching
             if((defendingPlayer.getHealth()-event.getFinalDamage()) <= 0 && attackingPlayerManual.equals("Demonic Manual")){
@@ -269,6 +279,11 @@ public class HitEvents implements Listener {
 
             double defense = defendingPlayerStage * getManualDefensePerStage(defendingPlayerManual);
             double damage = event.getDamage();
+
+            //qiaura defense
+            if(getAuraBool(defendingPlayer)){
+                defense *= 2;
+            }
 
             double resultDamage = damage - defense;
 

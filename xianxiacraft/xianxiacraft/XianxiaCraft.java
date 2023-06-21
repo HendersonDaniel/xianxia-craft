@@ -26,6 +26,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManualQiRegen;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getMaxQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
+import static xianxiacraft.xianxiacraft.QiManagers.QiManager.subtractQi;
 import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
 import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
@@ -64,6 +65,7 @@ public final class XianxiaCraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("qimine")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qimove")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("detonate")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("qiaura")).setExecutor(cultPassiveCommandExecutor);
 
         OperatorCommands operatorCommands = new OperatorCommands();
         Objects.requireNonNull(getCommand("addstage")).setExecutor(operatorCommands);
@@ -233,6 +235,21 @@ public final class XianxiaCraft extends JavaPlugin {
                             break;
                     }
 
+                }
+
+                //passive depletion for qiaura
+                if(getAuraBool(player)){
+                    if(getQi(player) >= 100){
+                        subtractQi(player,100);
+
+
+                        //switch statement checks for manual, particles every 3-4 sec based on manual
+
+                    } else {
+                        setAuraBool(player, false);
+                        qiAuraGlow(player,getAuraBool(player));
+                        player.sendMessage(ChatColor.GOLD + "You did not have enough qi to sustain your aura.");
+                    }
                 }
 
                 ScoreboardManager1.updateScoreboard(player);

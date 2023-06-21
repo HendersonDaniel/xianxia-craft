@@ -18,6 +18,8 @@ import java.util.UUID;
 
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.*;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
+import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.setAuraBool;
 
 public class ScoreboardManager1 implements Listener {
     private static Map<UUID, Scoreboard> scoreboardMap = new HashMap<>();
@@ -38,6 +40,7 @@ public class ScoreboardManager1 implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         createScoreboard(player);
+        player.setGlowing(false);
     }
 
     @EventHandler
