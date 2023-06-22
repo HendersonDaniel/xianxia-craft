@@ -12,7 +12,7 @@ This plugin relies on Minecraft 1.19.2. Other versions have not been fully teste
 
 ## Contributing
 
-Modifications are not accepted for this repository. However, I am open and willing to hear suggestions. This is my first complex coding project and my goal in making this plugin is to improve my skills. Please send all bug reports to danielhenderson.codeprojects@gmail.com.
+Modifications are not accepted for this repository. However, I am open and willing to hear suggestions. This is my first real coding project and my goal in making this plugin is to improve my skills. Please send all bug reports to danielhenderson.codeprojects@gmail.com.
 
 ## License
 
