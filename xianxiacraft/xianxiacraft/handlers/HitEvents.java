@@ -194,7 +194,7 @@ public class HitEvents implements Listener {
             //fungal manual buff if in biome
             if(attackingPlayerManual.equals("Fungal Manual")){
                 if(CountNearbyBlocks.countNearbyBlocks(attackingPlayer,Material.MYCELIUM)>=1){
-                    attackDamage += 2*attackingPlayerStage;
+                    attackDamage += 3*attackingPlayerStage;
                 }
             }
 

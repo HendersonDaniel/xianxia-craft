@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import xianxiacraft.xianxiacraft.customItems.ToolItems;
 import xianxiacraft.xianxiacraft.handlers.*;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
@@ -30,6 +31,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.QiManager.subtractQi;
 import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
 import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
+import static xianxiacraft.xianxiacraft.util.ParticleEffects.qiAuraParticleEffect;
 
 public final class XianxiaCraft extends JavaPlugin {
 
@@ -114,7 +116,15 @@ public final class XianxiaCraft extends JavaPlugin {
                 // Code to be executed every 3 seconds
                 updateQiLevels(manualList);
             }
-        }.runTaskTimer(this, 0L, 60L).getTaskId();
+        }.runTaskTimerAsynchronously(this, 0L, 60L).getTaskId();
+
+        // every 1/2 second
+        int taskId2 = new BukkitRunnable() {
+            @Override
+            public void run() {
+                auraParticles();
+            }
+        }.runTaskTimerAsynchronously(this, 0L, 10L).getTaskId();
 
 
 
@@ -242,9 +252,8 @@ public final class XianxiaCraft extends JavaPlugin {
                     if(getQi(player) >= 100){
                         subtractQi(player,100);
 
-
-                        //switch statement checks for manual, particles every 3-4 sec based on manual
-
+                        //particles every 3 sec based on manual
+                        qiAuraParticleEffect(player);
                     } else {
                         setAuraBool(player, false);
                         qiAuraGlow(player,getAuraBool(player));
@@ -256,6 +265,14 @@ public final class XianxiaCraft extends JavaPlugin {
             }
         }
 
+    }
+
+    private void auraParticles(){
+        for(Player player : Bukkit.getOnlinePlayers()){
+            if(getAuraBool(player)){
+                qiAuraParticleEffect(player);
+            }
+        }
     }
 
 }

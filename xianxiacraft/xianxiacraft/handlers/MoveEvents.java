@@ -40,13 +40,23 @@ public class MoveEvents implements Listener {
 
     @EventHandler
     public void onPlayerMine(BlockBreakEvent event){
+        Player player = event.getPlayer();
         //so that players cant infinitely farm their aura blocks.
-        if(getAuraBool(event.getPlayer())){
+        if(getAuraBool(player)){
             event.setCancelled(true);
+        }
+
+        Block block = event.getBlock();
+        //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
+        for (UUID playerId : originalBlocks.keySet()) {
+            if (originalBlocks.get(playerId).containsKey(block)) {
+                event.setCancelled(true);
+            }
         }
     }
 
-    private Map<Block,Material> originalBlocks = new HashMap<>();
+    private Map<UUID,Map<Block,Material>> originalBlocks = new HashMap<>();
+    // Map<Block,Material> originalBlocks = new HashMap<>();
 
     private Map<UUID,Boolean> isCleanedMap = new HashMap<>();
     //boolean isCleaned = true;
@@ -141,7 +151,7 @@ public class MoveEvents implements Listener {
 
             Location center = player.getLocation().clone().subtract(0,1,0);
 
-            int radius = 4;
+            int radius = getStage(player)/2;
 
             World world = center.getWorld();
             int centerX = center.getBlockX();
@@ -150,11 +160,20 @@ public class MoveEvents implements Listener {
 
 
             //revert changes
-            for (Block block1 : originalBlocks.keySet()) {
+            Map<Block, Material> playerOriginalBlocks = originalBlocks.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
+
+            for (Map.Entry<Block, Material> entry : playerOriginalBlocks.entrySet()) {
+                Block block = entry.getKey();
+                Material originalType = entry.getValue();
+                block.setType(originalType);
+            }
+
+            playerOriginalBlocks.clear();
+            /*for (Block block1 : originalBlocks.keySet()) {
                 block1.setType(originalBlocks.get(block1));
             }
             originalBlocks.clear();
-
+            */
 
             for (int x = centerX - radius; x <= centerX + radius; x++) {
                 for (int y = centerY - radius; y <= centerY + radius; y++) {
@@ -163,21 +182,28 @@ public class MoveEvents implements Listener {
                         if (i <= radius*radius) {
                             assert world != null;
                             Block block = world.getBlockAt(x, y, z);
-
-                            originalBlocks.put(block, block.getType());
-
-                            // make sure it isn't air or bedrock
-                            if(block.getType() != Material.AIR && block.getType() != Material.CAVE_AIR && block.getType() != Material.BEDROCK && block.getType() != blockType1 && block.getType() != blockType2){
-
-                                int blockOrNoBlock = (int) (Math.random() * 5);
-
-                                if(blockOrNoBlock == 1){
-                                    block.setType(blockType2);
-                                } else {
-                                    block.setType(blockType1);
+                            //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
+                            boolean foundInOtherPlayerMap = false;
+                            for (UUID playerId : originalBlocks.keySet()) {
+                                if (!playerId.equals(player.getUniqueId()) && originalBlocks.get(playerId).containsKey(block)) {
+                                    foundInOtherPlayerMap = true;
+                                    break;
                                 }
                             }
+                            if(!foundInOtherPlayerMap){
+                                originalBlocks.get(player.getUniqueId()).put(block,block.getType());
+                                // make sure it isn't air or bedrock
+                                if(block.getType() != Material.AIR && block.getType() != Material.CAVE_AIR && block.getType() != Material.BEDROCK && block.getType() != blockType1 && block.getType() != blockType2){
 
+                                    int blockOrNoBlock = (int) (Math.random() * 5);
+
+                                    if(blockOrNoBlock == 1){
+                                        block.setType(blockType2);
+                                    } else {
+                                        block.setType(blockType1);
+                                    }
+                                }
+                            }
                         }
 
                     }
@@ -189,10 +215,23 @@ public class MoveEvents implements Listener {
         }
         if((!getAuraBool(player)) && (!isCleanedMap.getOrDefault(player.getUniqueId(),true))){
             //revert changes
+            Map<Block, Material> playerOriginalBlocks = originalBlocks.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
+
+            //Map<Block, Material> playerOriginalBlocks = originalBlocks.get(playerId);
+
+            for (Map.Entry<Block, Material> entry : playerOriginalBlocks.entrySet()) {
+                Block block = entry.getKey();
+                Material originalType = entry.getValue();
+                block.setType(originalType);
+            }
+
+            playerOriginalBlocks.clear();
+            /*
             for (Block block1 : originalBlocks.keySet()) {
                 block1.setType(originalBlocks.get(block1));
             }
             originalBlocks.clear();
+             */
             isCleanedMap.put(player.getUniqueId(),true);
             //isCleaned = true;
         }
