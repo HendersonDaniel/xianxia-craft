@@ -8,11 +8,11 @@ This plugin relies on Minecraft 1.19.2. Other versions have not been fully teste
 
 ## Usage
 
-> **Usage Notice:** This Minecraft plugin is solely meant to serve as a demonstration of my work and is not intended for public usage, copying, or modification. However, permission has been granted to Immortalcraft to use this plugin on their server. If you are not Immortalcraft, please refrain from utilizing this plugin without explicit permission. If you would like to ask for permission to use this plugin, please contact me at danielhenderson.codeprojects@gmail.com.
+> **Usage Notice:** This Minecraft plugin is solely meant to serve as a demonstration of my work and is not intended for public usage, copying, or modification without explicit permission. If you would like to ask for permission to use this plugin, please contact me at danielhenderson.codeprojects@gmail.com.
 
 ## Contributing
 
-Modifications are not accepted for this repository. However, I am open and willing to hear suggestions. This is my first complex coding project and my goal in making this plugin is to improve my skills. Please send all bug reports to danielhenderson.codeprojects@gmail.com.
+Modifications are not accepted for this repository. However, I am open and willing to hear suggestions. This is my first real coding project and my goal in making this plugin is to improve my skills. Please send all bug reports to danielhenderson.codeprojects@gmail.com.
 
 ## License
 
