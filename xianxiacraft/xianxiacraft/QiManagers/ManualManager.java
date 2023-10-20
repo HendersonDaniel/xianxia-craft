@@ -109,15 +109,17 @@ public class ManualManager implements Listener {
                 if(bookAuthor.equals("Spellslot")){
                     assert bookTitle != null;
                     if(!(bookTitle.equals(manualsMap.get(event.getPlayer().getUniqueId())))){
+                        setPunchBool(event.getPlayer(),false);
+                        setMoveBool(event.getPlayer(),false);
+                        setMineBool(event.getPlayer(),false);
+                        setAuraBool(event.getPlayer(),false);
+
                         manualsMap.put(event.getPlayer().getUniqueId(),bookTitle);
                         PointManager.setPoints(event.getPlayer(),1);
                         QiManager.setQi(event.getPlayer(),0);
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Cultivation Manual changed to " + bookTitle + ".\nCultivation has been reset.");
                         //set all technique commands to false
-                        setPunchBool(event.getPlayer(),false);
-                        setMoveBool(event.getPlayer(),false);
-                        setMineBool(event.getPlayer(),false);
-                        setAuraBool(event.getPlayer(),false);
+
                         updateScoreboard(event.getPlayer());
 
                         // Prevent the book from being opened when right-clicked

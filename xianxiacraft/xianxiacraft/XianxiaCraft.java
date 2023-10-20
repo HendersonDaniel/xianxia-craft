@@ -116,7 +116,7 @@ public final class XianxiaCraft extends JavaPlugin {
                 // Code to be executed every 3 seconds
                 updateQiLevels(manualList);
             }
-        }.runTaskTimerAsynchronously(this, 0L, 60L).getTaskId();
+        }.runTaskTimer(this, 0L, 60L).getTaskId();
 
         // every 1/2 second
         int taskId2 = new BukkitRunnable() {
@@ -124,7 +124,7 @@ public final class XianxiaCraft extends JavaPlugin {
             public void run() {
                 auraParticles();
             }
-        }.runTaskTimerAsynchronously(this, 0L, 10L).getTaskId();
+        }.runTaskTimer(this, 0L, 10L).getTaskId();
 
 
 
