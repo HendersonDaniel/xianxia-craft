@@ -2,13 +2,13 @@
 
 A Minecraft plugin based on the Chinese fantasy genre known as Xianxia. It adds a progression system known as "cultivation" to the game, as well as unique items and commands. It allows players to use unique attack, movement, and defensive abilities depending on their progression.
 
+## Download
+
+The plugin can be downloaded here: https://www.spigotmc.org/resources/xianxiacraft.112468/
+
 ## Prerequisites
 
-This plugin relies on Minecraft 1.19.2. Other versions have not been fully tested, although 1.19.4 should also work.
-
-## Usage
-
-> **Usage Notice:** This Minecraft plugin is solely meant to serve as a demonstration of my work and is not intended for public usage, copying, or modification without explicit permission. If you would like to ask for permission to use this plugin, please contact me at danielhenderson.codeprojects@gmail.com.
+This plugin relies on Minecraft 1.19.2. Other versions have not been fully tested.
 
 ## Contributing
 
@@ -16,7 +16,7 @@ Modifications are not accepted for this repository. However, I am open and willi
 
 ## License
 
-> **License:** This Minecraft plugin is not released under any license. All rights reserved.
+> **License:** This Minecraft plugin is not released under any license. All rights reserved. I give permission to server owners to install the plugin on their server.
 
 ## Contact
 
@@ -26,10 +26,8 @@ I can be contacted at danielhenderson.codeprojects@gmail.com.
 
 **Disclaimer: For demonstration purposes only.**
 
-- This Minecraft plugin is provided for demonstration purposes to showcase the creator's work.
-- It is not intended for public usage, copying, or modification without explicit permission from the creator.
 - The plugin is offered without any warranties or guarantees of any kind.
+- It is not intended for modification without explicit permission from the creator.
 - The creator does not provide technical support or assistance for the installation or usage of this plugin.
-- Please refrain from utilizing or distributing this plugin without explicit permission from the creator.
 
 Thank you for your understanding.
