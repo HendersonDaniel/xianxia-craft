@@ -67,7 +67,7 @@ public class HitEvents implements Listener {
                                         targetBlock.setType(Material.RED_MUSHROOM_BLOCK);
                                     } else if(checkStem(targetBlockType)){
                                         targetBlock.setType(Material.MUSHROOM_STEM);
-                                    } else if(targetBlockType == Material.GRASS || targetBlockType == Material.TALL_GRASS){
+                                    } else if(targetBlockType == Material.SHORT_GRASS || targetBlockType == Material.TALL_GRASS){
                                         targetBlock.setType(Material.AIR);
                                     } else if(checkToMushroomFlower(targetBlockType)){
                                         targetBlock.setType(Material.RED_MUSHROOM);
