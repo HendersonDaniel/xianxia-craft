@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
@@ -154,7 +155,9 @@ public class ManualManager implements Listener {
         try {
             if (dataFile.exists()) {
                 FileReader reader = new FileReader(dataFile);
-                Yaml yaml = new Yaml();
+                LoaderOptions loaderOptions = new LoaderOptions();
+                loaderOptions.setTagInspector(tag -> true);
+                Yaml yaml = new Yaml(loaderOptions);
                 manualsMap = yaml.loadAs(reader, HashMap.class);
                 reader.close();
             }

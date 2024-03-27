@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 
@@ -72,7 +73,9 @@ public class QiManager implements Listener {
         try {
             if (dataFile.exists()) {
                 FileReader reader = new FileReader(dataFile);
-                Yaml yaml = new Yaml();
+                LoaderOptions loaderOptions = new LoaderOptions();
+                loaderOptions.setTagInspector(tag -> true);
+                Yaml yaml = new Yaml(loaderOptions);
                 qiMap = yaml.loadAs(reader, HashMap.class);
                 reader.close();
             }
