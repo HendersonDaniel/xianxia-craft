@@ -154,7 +154,9 @@ public class ManualManager implements Listener {
         try {
             if (dataFile.exists()) {
                 FileReader reader = new FileReader(dataFile);
-                Yaml yaml = new Yaml();
+                LoaderOptions loaderOptions = new LoaderOptions();
+                loaderOptions.setTagInspector(tag -> true);
+                Yaml yaml = new Yaml(loaderOptions);
                 manualsMap = yaml.loadAs(reader, HashMap.class);
                 reader.close();
             }
