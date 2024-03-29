@@ -29,7 +29,9 @@ import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getMaxQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.subtractQi;
 import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
+import static xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual.fattyManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
+import static xianxiacraft.xianxiacraft.handlers.Manuals.SugarFiendManual.sugarFiendQiMove;
 import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
 import static xianxiacraft.xianxiacraft.util.ParticleEffects.qiAuraParticleEffect;
 
@@ -68,6 +70,7 @@ public final class XianxiaCraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("qimove")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("detonate")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qiaura")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("qifly")).setExecutor(cultPassiveCommandExecutor);
 
         OperatorCommands operatorCommands = new OperatorCommands();
         Objects.requireNonNull(getCommand("addstage")).setExecutor(operatorCommands);
@@ -212,7 +215,7 @@ public final class XianxiaCraft extends JavaPlugin {
                                 QiManager.subtractQi(player, 12);
                             } else {
                                 setMoveBool(player, false);
-                                player.removePotionEffect(PotionEffectType.SPEED);
+                                sugarFiendQiMove(player,false);
                                 player.sendMessage(ChatColor.GOLD + "You did not have enough qi to augment your movements.\nQiMove: Inactive");
                             }
                             break;
@@ -221,6 +224,7 @@ public final class XianxiaCraft extends JavaPlugin {
                                 QiManager.subtractQi(player, 12);
                             } else {
                                 setMoveBool(player, false);
+                                fattyManualQiMove(player,false);
                                 player.sendMessage(ChatColor.GOLD + "You did not have enough qi to augment your movements.\nQiMove: Inactive");
                             }
                             break;
@@ -258,6 +262,20 @@ public final class XianxiaCraft extends JavaPlugin {
                         setAuraBool(player, false);
                         qiAuraGlow(player,getAuraBool(player));
                         player.sendMessage(ChatColor.GOLD + "You did not have enough qi to sustain your aura.");
+                    }
+                }
+
+                //passive depletion for qifly
+                if(getFlyBool(player) && player.isFlying()){
+                    if(getQi(player) >= 100){
+                        subtractQi(player,100);
+
+
+                    } else {
+                        setFlyBool(player, false);
+                        player.setAllowFlight(false);
+                        player.setFlySpeed(0.05f);
+                        player.sendMessage(ChatColor.GOLD + "You did not have enough qi to sustain your flight.");
                     }
                 }
 

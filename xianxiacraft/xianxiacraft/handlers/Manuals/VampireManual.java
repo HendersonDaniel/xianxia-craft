@@ -21,8 +21,8 @@ public class VampireManual extends Manual {
         int stage = getStage(player);
         int points = getPoints(player);
 
-
-        if (target.getType() == EntityType.VILLAGER) {
+        EntityType e = target.getType();
+        if (e == EntityType.VILLAGER || e == EntityType.PILLAGER || e == EntityType.ILLUSIONER || e == EntityType.EVOKER || e == EntityType.WITCH) {
             PointManager.addPoints(player, 1);
             ScoreboardManager1.updateScoreboard(player);
         }

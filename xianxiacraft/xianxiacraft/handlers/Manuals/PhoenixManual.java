@@ -11,7 +11,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 public class PhoenixManual extends Manual{
 
     public PhoenixManual(){
-        super("Phoenix Manual",0.03,6,4);
+        super("Phoenix Manual",0.05,6,4);
     }
 
 

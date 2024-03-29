@@ -15,6 +15,7 @@ public class TechniqueManager {
     private static Map<UUID,Boolean> moveBool = new HashMap<>();
     private static Map<UUID,Boolean> mineBool = new HashMap<>();
     private static Map<UUID,Boolean> auraBool = new HashMap<>();
+    private static Map<UUID,Boolean> flyBool = new HashMap<>();
     public static Map<UUID,Boolean> hiddenByTaijiPainting = new HashMap<>();
 
     //hiddenByTaijiPainting
@@ -57,7 +58,13 @@ public class TechniqueManager {
         auraBool.put(player.getUniqueId(),bool);
     }
 
-
+    //qifly
+    public static Boolean getFlyBool(Player player){
+        return flyBool.getOrDefault(player.getUniqueId(),false);
+    }
+    public static void setFlyBool(Player player, boolean bool){
+        flyBool.put(player.getUniqueId(),bool);
+    }
 
 
 

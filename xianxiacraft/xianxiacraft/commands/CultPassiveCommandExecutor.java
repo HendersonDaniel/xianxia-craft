@@ -163,6 +163,36 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
             return true;
         }
 
+        //qifly
+        if(command.getName().equalsIgnoreCase("qifly")){
+            if(!(getStage(sender) >= 7)){
+                sender.sendMessage(ChatColor.GOLD + "Must have Stage 7 or above cultivation base to use this technique.");
+                return true;
+            }
+
+            boolean currentFlyBool = TechniqueManager.getFlyBool(sender);
+
+            if(currentFlyBool){
+                sender.sendMessage(ChatColor.GOLD + "QiFly: Inactive");
+                sender.setAllowFlight(false);
+                sender.setFlySpeed(0.05f);
+            } else {
+                sender.sendMessage(ChatColor.GOLD + "QiFly: Active");
+                sender.setAllowFlight(true);
+
+                if(getManual(sender).equals("Sugar Fiend")){
+                    sender.setFlySpeed((float) (getStage(sender)*0.05));
+                }
+
+            }
+
+            TechniqueManager.setFlyBool(sender,!currentFlyBool);
+
+            return true;
+        }
+
+
+
 
 
         return true;

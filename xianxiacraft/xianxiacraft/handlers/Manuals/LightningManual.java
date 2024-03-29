@@ -14,7 +14,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 public class LightningManual extends Manual{
 
     public LightningManual(){
-        super("LightningManual",0.05,7,2);
+        super("LightningManual",0.03,7,2);
     }
 
     public static void lightningManualPointIncrement(ItemStack itemInHand, Player player){

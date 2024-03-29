@@ -169,11 +169,6 @@ public class MoveEvents implements Listener {
             }
 
             playerOriginalBlocks.clear();
-            /*for (Block block1 : originalBlocks.keySet()) {
-                block1.setType(originalBlocks.get(block1));
-            }
-            originalBlocks.clear();
-            */
 
             for (int x = centerX - radius; x <= centerX + radius; x++) {
                 for (int y = centerY - radius; y <= centerY + radius; y++) {
