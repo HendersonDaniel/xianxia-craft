@@ -135,12 +135,12 @@ public class HitEvents implements Listener {
 
 
     //attack damage calculation, , punch techniques (no longer: defense against other player calculation)
-    @EventHandler
-    public void onPlayerHit(EntityDamageByEntityEvent event){
-
-
-
-    }
+//    @EventHandler
+//    public void onPlayerHit(EntityDamageByEntityEvent event){
+//
+//
+//
+//    }
 
     //Environment vs player
 
@@ -309,7 +309,7 @@ public class HitEvents implements Listener {
 
 
                 //mobs vs players
-            } else if((entityDamageByEntityEvent.getDamager() instanceof Monster) && (event.getEntity() instanceof Player)){
+            } else if((entityDamageByEntityEvent.getDamager() instanceof LivingEntity) && (event.getEntity() instanceof Player)){
                 Player defendingPlayer = (Player) event.getEntity();
                 String defendingPlayerManual = getManual(defendingPlayer);
                 int defendingPlayerStage = getStage(defendingPlayer);
