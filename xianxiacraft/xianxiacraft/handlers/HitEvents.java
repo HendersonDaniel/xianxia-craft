@@ -237,7 +237,7 @@ public class HitEvents implements Listener {
 
 
 
-                //check for if target is player or not and respond accordingly
+                //check for if target is player or not and respond accordingly this statement says IF NOT PLAYER
                 if (!(event.getEntity() instanceof Player)) {
 
                     event.setDamage(attackDamage);
@@ -330,24 +330,23 @@ public class HitEvents implements Listener {
                     //minimum damage for PvE
                     event.setDamage(0);
                 }
+            } else if(((entityDamageByEntityEvent.getDamager() instanceof Projectile) || entityDamageByEntityEvent.getDamager() instanceof Explosive) && (event.getEntity() instanceof Player)){
+            Player defendingPlayer = (Player) event.getEntity();
+            String defendingPlayerManual = getManual(defendingPlayer);
+            int defendingPlayerStage = getStage(defendingPlayer);
+
+            double defense = defendingPlayerStage * getManualDefensePerStage(defendingPlayerManual);
+            double damage = event.getDamage();
+
+            double resultDamage = damage - defense;
+
+            if(resultDamage > 0){
+                event.setDamage(resultDamage);
+            } else {
+                //minimum damage for PvE
+                event.setDamage(1);
             }
-//        else if(((event.getDamager() instanceof Projectile) || event.getDamager() instanceof Explosive) && (event.getEntity() instanceof Player)){
-//            Player defendingPlayer = (Player) event.getEntity();
-//            String defendingPlayerManual = getManual(defendingPlayer);
-//            int defendingPlayerStage = getStage(defendingPlayer);
-//
-//            double defense = defendingPlayerStage * getManualDefensePerStage(defendingPlayerManual);
-//            double damage = event.getDamage();
-//
-//            double resultDamage = damage - defense;
-//
-//            if(resultDamage > 0){
-//                event.setDamage(resultDamage);
-//            } else {
-//                //minimum damage for PvE
-//                event.setDamage(1);
-//            }
-//        }
+        }
 
         } else if(event.getEntity() instanceof Player){
 
