@@ -128,7 +128,7 @@ public class ManualManager implements Listener {
                         setFlyBool(p,false);
 
                         p.setAllowFlight(false);
-                        p.setFlySpeed(0.05f);
+                        p.setFlySpeed(0.1f);
 
 
                         manualsMap.put(p.getUniqueId(),bookTitle);

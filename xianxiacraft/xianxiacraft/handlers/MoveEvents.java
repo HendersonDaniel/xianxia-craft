@@ -2,6 +2,7 @@ package xianxiacraft.xianxiacraft.handlers;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -177,6 +178,12 @@ public class MoveEvents implements Listener {
                         if (i <= radius*radius) {
                             assert world != null;
                             Block block = world.getBlockAt(x, y, z);
+
+                            //if block is container then skip it
+                            if(block.getState() instanceof Container){
+                                continue;
+                            }
+
                             //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
                             boolean foundInOtherPlayerMap = false;
                             for (UUID playerId : originalBlocks.keySet()) {

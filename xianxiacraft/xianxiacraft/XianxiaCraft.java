@@ -274,7 +274,7 @@ public final class XianxiaCraft extends JavaPlugin {
                     } else {
                         setFlyBool(player, false);
                         player.setAllowFlight(false);
-                        player.setFlySpeed(0.05f);
+                        player.setFlySpeed(0.1f);
                         player.sendMessage(ChatColor.GOLD + "You did not have enough qi to sustain your flight.");
                     }
                 }

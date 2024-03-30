@@ -175,7 +175,7 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
             if(currentFlyBool){
                 sender.sendMessage(ChatColor.GOLD + "QiFly: Inactive");
                 sender.setAllowFlight(false);
-                sender.setFlySpeed(0.05f);
+                sender.setFlySpeed(0.1f);
             } else {
                 sender.sendMessage(ChatColor.GOLD + "QiFly: Active");
                 sender.setAllowFlight(true);
