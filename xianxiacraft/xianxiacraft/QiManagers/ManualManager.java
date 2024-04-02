@@ -4,9 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,6 +16,7 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
+import xianxiacraft.xianxiacraft.util.ChatUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -97,7 +100,12 @@ public class ManualManager implements Listener {
     //remember to add the update perm thing
     @EventHandler
     public void onManualChange(PlayerInteractEvent event) {
-        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
+        Player p = event.getPlayer();
+
+        ItemStack itemInHand = p.getInventory().getItemInMainHand();
 
         // Check if the item in hand is a written book
         if (itemInHand.getType() == Material.WRITTEN_BOOK) {
@@ -110,41 +118,51 @@ public class ManualManager implements Listener {
 
                 // Check if the book title matches a specific technique manual
                 assert bookAuthor != null;
-                if(bookAuthor.equals("Spellslot")){
+                if (bookAuthor.equals("Spellslot")) {
+
                     assert bookTitle != null;
-                    final Player p = event.getPlayer();
-                    if(!(bookTitle.equals(manualsMap.get(p.getUniqueId())))){
+                    if (!(bookTitle.equals(manualsMap.get(p.getUniqueId())))) {
 
-                        setPunchBool(p,false);
-                        setMoveBool(p,false);
-
-                        sugarFiendQiMove(p,false);
-                        fattyManualQiMove(p,false);
-                        fungalManualQiMove(p,false);
-
-
-                        setMineBool(p,false);
-                        setAuraBool(p,false);
-                        setFlyBool(p,false);
-
-                        p.setAllowFlight(false);
-                        p.setFlySpeed(0.1f);
-
-
-                        manualsMap.put(p.getUniqueId(),bookTitle);
-                        PointManager.setPoints(p,1);
-                        QiManager.setQi(p,0);
-                        p.sendMessage(ChatColor.GOLD + "Cultivation Manual changed to " + bookTitle + ".\nCultivation has been reset.");
-                        //set all technique commands to false
-
-                        updateScoreboard(p);
-
-                        // Prevent the book from being opened when right-clicked on first try
+                        ChatUtils.handleManualChange(event);
                         event.setCancelled(true);
                     }
                 }
-
             }
+        }
+    }
+
+    public static void accept(Player p) {
+
+        ItemStack itemInHand = p.getInventory().getItemInMainHand();
+        BookMeta bookMeta = itemInHand != null ? (BookMeta) itemInHand.getItemMeta() : null;
+        String bookAuthor = bookMeta != null ? bookMeta.getAuthor() : null;
+        String bookTitle = bookMeta != null ? bookMeta.getTitle() : null;
+
+        if(itemInHand != null && bookMeta != null && bookAuthor != null && bookAuthor.equals("Spellslot") && bookTitle != null && !(bookTitle.equals(manualsMap.get(p.getUniqueId())))) {
+
+            setPunchBool(p, false);
+            setMoveBool(p, false);
+
+            sugarFiendQiMove(p, false);
+            fattyManualQiMove(p, false);
+            fungalManualQiMove(p, false);
+
+
+            setMineBool(p, false);
+            setAuraBool(p, false);
+            setFlyBool(p, false);
+
+            p.setAllowFlight(false);
+            p.setFlySpeed(0.1f);
+
+
+            manualsMap.put(p.getUniqueId(), bookTitle);
+            PointManager.setPoints(p, 1);
+            QiManager.setQi(p, 0);
+            p.sendMessage(ChatColor.GOLD + "Cultivation Manual changed to " + bookTitle + ".\nCultivation has been reset.");
+            //set all technique commands to false
+
+            updateScoreboard(p);
         }
     }
 

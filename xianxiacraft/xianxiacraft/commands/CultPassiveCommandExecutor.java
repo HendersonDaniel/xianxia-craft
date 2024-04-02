@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import xianxiacraft.xianxiacraft.QiManagers.ManualManager;
 import xianxiacraft.xianxiacraft.QiManagers.TechniqueManager;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
@@ -189,6 +190,13 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
             TechniqueManager.setFlyBool(sender,!currentFlyBool);
 
             return true;
+        }
+
+        //accept manual
+        if(command.getName().equalsIgnoreCase("manaccept")){
+
+            ManualManager.accept(sender);
+
         }
 
 
