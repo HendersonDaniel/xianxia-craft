@@ -4,7 +4,7 @@ A Minecraft plugin based on the Chinese fantasy genre known as Xianxia. It adds 
 
 ## Download
 
-The plugin can be downloaded here: https://www.spigotmc.org/resources/xianxiacraft.112468/
+More information, as well as the download, can be found here: https://www.spigotmc.org/resources/xianxiacraft.112468/
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ This plugin relies on Minecraft 1.19.2. Other versions have not been fully teste
 
 ## Contributing
 
-Modifications are not accepted for this repository. However, I am open and willing to hear suggestions. This is my first real coding project and my goal in making this plugin is to improve my skills. Please send all bug reports to danielhenderson.codeprojects@gmail.com.
+Please send all bug reports to danielhenderson.codeprojects@gmail.com. If you want to attempt to fix a bug yourself, please submit a pull request.
 
 ## License
 
