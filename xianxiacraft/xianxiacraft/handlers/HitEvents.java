@@ -170,7 +170,7 @@ public class HitEvents implements Listener {
                     //check for manual type
                     switch (attackingPlayerManual) {
                         case "Ironskin Manual":
-                            attackDamage += (2 * attackingPlayerStage);
+                            attackDamage += (attackingPlayerStage);
 
                             break;
                         case "Fatty Manual": {

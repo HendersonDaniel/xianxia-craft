@@ -29,6 +29,8 @@ public class FattyManual extends Manual{
 
     public static void fattyManualPointIncrement(Player player, ItemStack item){
 
+
+
         int stage = getStage(player);
         int points = getPoints(player);
 

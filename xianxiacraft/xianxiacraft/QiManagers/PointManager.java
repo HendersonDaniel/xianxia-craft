@@ -16,6 +16,7 @@ import java.lang.Math;
 public class PointManager implements Listener {
 
     private static Map<UUID, Integer> pointMap = new HashMap<>();
+    public static Map<UUID,String[]> daoAttainmentMap = new HashMap<>();
     private final JavaPlugin plugin;
 
     public PointManager(JavaPlugin plugin) {
@@ -74,6 +75,8 @@ public class PointManager implements Listener {
 
 
 
+
+
     public void savePointData() {
         File dataFolder = plugin.getDataFolder();
         File dataFile = new File(dataFolder, "point_data.yml");
@@ -91,8 +94,6 @@ public class PointManager implements Listener {
             e.printStackTrace();
         }
     }
-
-
     public void loadPointData() {
         File dataFile = new File(plugin.getDataFolder(), "point_data.yml");
         try {
@@ -108,6 +109,41 @@ public class PointManager implements Listener {
             e.printStackTrace();
         }
     }
+
+    public void saveDaoAttainmentData() {
+        File dataFolder = plugin.getDataFolder();
+        File dataFile = new File(dataFolder, "dao_attainment_data.yml");
+        try {
+            if (!dataFile.exists()) {
+                dataFolder.mkdirs();
+                dataFile.createNewFile();
+            }
+
+            FileWriter writer = new FileWriter(dataFile);
+            Yaml yaml = new Yaml();
+            yaml.dump(daoAttainmentMap, writer);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadDaoAttainmentData() {
+        File dataFile = new File(plugin.getDataFolder(), "dao_attainment_data.yml");
+        try {
+            if (dataFile.exists()) {
+                FileReader reader = new FileReader(dataFile);
+                LoaderOptions loaderOptions = new LoaderOptions();
+                loaderOptions.setTagInspector(tag -> true);
+                Yaml yaml = new Yaml(loaderOptions);
+                daoAttainmentMap = yaml.loadAs(reader, HashMap.class);
+                reader.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
