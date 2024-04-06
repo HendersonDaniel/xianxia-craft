@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -346,7 +347,14 @@ public class HitEvents implements Listener {
                 //minimum damage for PvE
                 event.setDamage(1);
             }
-        }
+        } else if(entityDamageByEntityEvent.getDamager() instanceof LightningStrike && (event.getEntity() instanceof Player)){ //if my boy gets struck by lightning
+                if(getManual((Player) event.getEntity()).equals("LightningManual")){
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+
+
 
         } else if(event.getEntity() instanceof Player){
 
@@ -369,10 +377,11 @@ public class HitEvents implements Listener {
                 return;
             }
 
-            if(defendingPlayerManual.equals("LightningManual") && event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING){
+            if(defendingPlayerManual.equals("LightningManual") && (event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)){
                 event.setCancelled(true);
                 return;
             }
+
 
             double defense = defendingPlayerStage * getManualDefensePerStage(defendingPlayerManual);
             double damage = event.getDamage();
