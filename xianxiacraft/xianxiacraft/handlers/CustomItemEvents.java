@@ -84,6 +84,7 @@ public class CustomItemEvents implements Listener {
             //Taiji Painting
             NamespacedKey key = new NamespacedKey(plugin, "customUtilityTools");
             ItemMeta itemMeta = event.getItem().getItemMeta();
+            assert itemMeta != null;
             PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
             if (container.has(key, PersistentDataType.STRING)) {

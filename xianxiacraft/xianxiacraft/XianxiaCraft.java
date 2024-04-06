@@ -50,6 +50,7 @@ public final class XianxiaCraft extends JavaPlugin {
         // Plugin startup logic
         pointManager = new PointManager(this);
         pointManager.loadPointData();
+        pointManager.loadDaoAttainmentData();
 
         manualManager = new ManualManager(this);
         manualManager.loadManualData();
@@ -151,6 +152,7 @@ public final class XianxiaCraft extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         pointManager.savePointData();
+        pointManager.saveDaoAttainmentData();
         manualManager.saveManualData();
         qiManager.saveQiData();
 

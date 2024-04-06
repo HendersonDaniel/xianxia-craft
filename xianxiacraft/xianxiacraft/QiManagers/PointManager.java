@@ -8,15 +8,15 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.lang.Math;
+
+import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 
 public class PointManager implements Listener {
 
     private static Map<UUID, Integer> pointMap = new HashMap<>();
-    public static Map<UUID,String[]> daoAttainmentMap = new HashMap<>();
+    public static Map<UUID, Set<String>> daoAttainmentMap = new HashMap<>(); // number of strings in the array will be the modifier
     private final JavaPlugin plugin;
 
     public PointManager(JavaPlugin plugin) {
@@ -43,6 +43,15 @@ public class PointManager implements Listener {
 
     //Method to add points
     public static void addPoints(Player player, int points) {
+        UUID id = player.getUniqueId();
+        pointMap.put(id, getPoints(player) + points);
+        if(getStage(player) == 10){
+            Set<String> t = daoAttainmentMap.getOrDefault(id,new HashSet<>());
+            t.add(getManual(player));
+            daoAttainmentMap.put(id,t);
+        }
+    }
+    public static void addPointsWithoutDaoCheck(Player player, int points) {
         pointMap.put(player.getUniqueId(), getPoints(player) + points);
     }
 

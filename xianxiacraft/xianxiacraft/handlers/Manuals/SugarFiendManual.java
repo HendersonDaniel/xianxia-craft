@@ -12,6 +12,7 @@ import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class SugarFiendManual extends Manual{
 
@@ -34,6 +35,8 @@ public class SugarFiendManual extends Manual{
         if (player.getWorld().getName().equals("world_nether")) {
             if (item.getType() == Material.CAKE || item.getType() == Material.COOKIE || item.getType() == Material.PUMPKIN_PIE || item.getType() == Material.HONEY_BOTTLE) {
 
+                int cultivationModifier = getCultivationModifier(player);
+
                 int stage = getStage(player);
                 int points = getPoints(player);
 
@@ -46,19 +49,19 @@ public class SugarFiendManual extends Manual{
                     itemInLeftHand.setAmount(itemInLeftHand.getAmount() - 1);
                 }
 
-                if (points + 1 == (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
+                if (points + 1 + cultivationModifier >= (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
                     if (!(countNearbyBlocks(player, Material.CAKE) >= (Math.pow(2, stage - 1)))) {
                         //send message "Breakthrough requirement not met. Consult your manual."
                         player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                         return false;
                     }
-                    PointManager.addPoints(player, 1);
+                    PointManager.addPoints(player, 1 + cultivationModifier);
                     ScoreboardManager1.updateScoreboard(player);
                     player.setFoodLevel(19);
                     return true;
                 }
 
-                PointManager.addPoints(player, 1);
+                PointManager.addPoints(player, 1+ cultivationModifier);
                 ScoreboardManager1.updateScoreboard(player);
                 player.setFoodLevel(19);
                 return true;

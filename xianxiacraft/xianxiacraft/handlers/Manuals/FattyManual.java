@@ -7,8 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 
-import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
-import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
+import java.util.HashSet;
+import java.util.Set;
+
+import static xianxiacraft.xianxiacraft.QiManagers.PointManager.*;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class FattyManual extends Manual{
 
@@ -31,6 +34,10 @@ public class FattyManual extends Manual{
 
 
 
+        int cultivationModifier = getCultivationModifier(player);
+
+
+
         int stage = getStage(player);
         int points = getPoints(player);
 
@@ -43,20 +50,20 @@ public class FattyManual extends Manual{
             itemInLeftHand.setAmount(itemInLeftHand.getAmount()-1);
         }
 
-        if(points + 1 ==  (int) (20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20)){
+        if(points + 1 + cultivationModifier >=  (int) (20 * Math.pow(10,(stage+1) * Math.log10(2)) - 20)){
             if(player.getFoodLevel() > 0){
                 //send message "Breakthrough requirement not met. Consult your manual."
                 player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                 return;
             }
-            PointManager.addPoints(player,1);
+            PointManager.addPoints(player,1+ cultivationModifier);
             ScoreboardManager1.updateScoreboard(player);
             player.setFoodLevel(20);
             player.setSaturation(20);
             return;
         }
 
-        PointManager.addPoints(player,1);
+        PointManager.addPoints(player,1+ cultivationModifier);
         ScoreboardManager1.updateScoreboard(player);
         player.setFoodLevel(19);
         player.setSaturation(8);

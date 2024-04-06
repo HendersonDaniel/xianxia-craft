@@ -11,6 +11,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.*;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.addPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1.updateScoreboard;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class PlayerDeathHandler implements Listener {
 
@@ -33,6 +34,9 @@ public class PlayerDeathHandler implements Listener {
 
             assert attackingPlayer != null;
             if(getManual(attackingPlayer).equals("Demonic Manual")){
+
+                int cultivationModifier = getCultivationModifier(attackingPlayer);
+
                 int points1 = getPoints(defendingPlayer);
                 int stage1 = getStage(defendingPlayer);
 
@@ -41,7 +45,7 @@ public class PlayerDeathHandler implements Listener {
                 int leeched = (points1 - variable1-1);
 
                 setPoints(defendingPlayer,points1-leeched);
-                addPoints(attackingPlayer,leeched);
+                addPoints(attackingPlayer,leeched + (leeched * cultivationModifier));
                 updateScoreboard(defendingPlayer);
                 updateScoreboard(attackingPlayer);
 

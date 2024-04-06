@@ -7,8 +7,11 @@ import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.util.CountNearbyBlocks;
 
-import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
-import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
+import java.util.HashSet;
+import java.util.Set;
+
+import static xianxiacraft.xianxiacraft.QiManagers.PointManager.*;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class IceManual extends Manual {
 
@@ -19,24 +22,29 @@ public class IceManual extends Manual {
     }
 
     public static void iceManualPointIncrement(ItemStack itemInHand, Player player){
-        int stage = getStage(player);
-        int points = getPoints(player);
+
 
         if (itemInHand.getType() == Material.ICE){
-            if(points + 1 ==  (int) (20 * Math.pow(2,(stage+1)) - 20)){
+
+            int cultivationModifier = getCultivationModifier(player);
+
+            int stage = getStage(player);
+            int points = getPoints(player);
+
+            if(points + 1 + cultivationModifier >=  (int) (20 * Math.pow(2,(stage+1)) - 20)){
                 if(!(CountNearbyBlocks.countNearbyBlocks(player,Material.BLUE_ICE) >= (Math.pow(2,stage-1)))){
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                     return;
                 }
                 itemInHand.setAmount(itemInHand.getAmount()-1);
-                PointManager.addPoints(player,1);
+                PointManager.addPoints(player,1 + cultivationModifier);
                 ScoreboardManager1.updateScoreboard(player);
                 return;
             }
 
             itemInHand.setAmount(itemInHand.getAmount()-1);
-            PointManager.addPoints(player,1);
+            PointManager.addPoints(player,1+ cultivationModifier);
             ScoreboardManager1.updateScoreboard(player);
         }
     }

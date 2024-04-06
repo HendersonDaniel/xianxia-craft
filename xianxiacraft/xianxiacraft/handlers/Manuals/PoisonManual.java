@@ -10,6 +10,7 @@ import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class PoisonManual extends Manual{
 
@@ -21,6 +22,8 @@ public class PoisonManual extends Manual{
     public static boolean poisonManualPointIncrement(Player player, ItemStack item) {
 
         if (item.getType() == Material.SPIDER_EYE || item.getType() == Material.PUFFERFISH || item.getType() == Material.POISONOUS_POTATO) {
+
+            int cultivationModifier = getCultivationModifier(player);
 
             int stage = getStage(player);
             int points = getPoints(player);
@@ -34,19 +37,19 @@ public class PoisonManual extends Manual{
                 itemInLeftHand.setAmount(itemInLeftHand.getAmount() - 1);
             }
 
-            if (points + 1 == (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
+            if (points + 1 + cultivationModifier >= (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
                 if (!(player.getLocation().getBlock().getBiome() == Biome.SWAMP)) {
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                     return false;
                 }
-                PointManager.addPoints(player, 1);
+                PointManager.addPoints(player, 1 + cultivationModifier);
                 ScoreboardManager1.updateScoreboard(player);
                 player.setFoodLevel(19);
                 return true;
             }
 
-            PointManager.addPoints(player, 1);
+            PointManager.addPoints(player, 1+ cultivationModifier);
             ScoreboardManager1.updateScoreboard(player);
             player.setFoodLevel(19);
             return true;

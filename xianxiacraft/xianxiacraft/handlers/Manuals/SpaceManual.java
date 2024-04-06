@@ -13,6 +13,7 @@ import java.util.Random;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
 import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class SpaceManual extends Manual{
 
@@ -23,6 +24,8 @@ public class SpaceManual extends Manual{
     public static void spaceManualPointIncrement(Player player, ItemStack item) {
 
         if (item.getType() == Material.CHORUS_FRUIT) {
+
+            int cultivationModifier = getCultivationModifier(player);
 
             int stage = getStage(player);
             int points = getPoints(player);
@@ -36,18 +39,18 @@ public class SpaceManual extends Manual{
                 itemInLeftHand.setAmount(itemInLeftHand.getAmount() - 1);
             }
 
-            if (points + 1 == (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
+            if (points + 1 + cultivationModifier>= (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
                 if (!(countNearbyBlocks(player, Material.SHULKER_BOX) >= (Math.pow(2,stage-1)))) {
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                     return;
                 }
-                PointManager.addPoints(player, 1);
+                PointManager.addPoints(player, 1 + cultivationModifier);
                 ScoreboardManager1.updateScoreboard(player);
                 return;
             }
 
-            PointManager.addPoints(player, 1);
+            PointManager.addPoints(player, 1+ cultivationModifier);
             ScoreboardManager1.updateScoreboard(player);
         }
     }

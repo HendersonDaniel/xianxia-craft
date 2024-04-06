@@ -8,6 +8,7 @@ import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class VampireManual extends Manual {
 
@@ -18,12 +19,14 @@ public class VampireManual extends Manual {
 
     public static void demonicManualManualPointIncrement(Player player, LivingEntity target) {
 
+        int cultivationModifier = getCultivationModifier(player);
+
         int stage = getStage(player);
         int points = getPoints(player);
 
         EntityType e = target.getType();
         if (e == EntityType.VILLAGER || e == EntityType.PILLAGER || e == EntityType.ILLUSIONER || e == EntityType.EVOKER || e == EntityType.WITCH) {
-            PointManager.addPoints(player, 1);
+            PointManager.addPoints(player, 1 + cultivationModifier);
             ScoreboardManager1.updateScoreboard(player);
         }
     }

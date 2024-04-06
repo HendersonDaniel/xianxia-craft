@@ -11,9 +11,12 @@ import xianxiacraft.xianxiacraft.QiManagers.PointManager;
 import xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1;
 import xianxiacraft.xianxiacraft.util.CountNearbyBlocks;
 
-import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getPoints;
-import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getStage;
+import java.util.HashSet;
+import java.util.Set;
+
+import static xianxiacraft.xianxiacraft.QiManagers.PointManager.*;
 import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
+import static xianxiacraft.xianxiacraft.util.ManualUtils.getCultivationModifier;
 
 public class FungalManual extends Manual{
 
@@ -33,6 +36,8 @@ public class FungalManual extends Manual{
 
         if (item.getType() == Material.SUSPICIOUS_STEW) {
 
+            int cultivationModifier = getCultivationModifier(player);
+
             int stage = getStage(player);
             int points = getPoints(player);
 
@@ -45,18 +50,18 @@ public class FungalManual extends Manual{
                 itemInLeftHand.setAmount(itemInLeftHand.getAmount() - 1);
             }
 
-            if (points + 2 == (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
+            if (points + 2 + (2*cultivationModifier) >= (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
                 if (!(CountNearbyBlocks.countNearbyBlocks(player,Material.MYCELIUM) >= 1)) {
                     //send message "Breakthrough requirement not met. Consult your manual."
                     player.sendMessage(ChatColor.GOLD + "Breakthrough requirement not met. Consult your manual.");
                     return false;
                 }
-                PointManager.addPoints(player, 2);
+                PointManager.addPoints(player, 2 + (2*cultivationModifier));
                 ScoreboardManager1.updateScoreboard(player);
                 return true;
             }
 
-            PointManager.addPoints(player, 2);
+            PointManager.addPoints(player, 2+(2* cultivationModifier));
             ScoreboardManager1.updateScoreboard(player);
             return true;
         }
