@@ -14,9 +14,33 @@ This plugin relies on Minecraft 1.19.2. Other versions have not been fully teste
 
 Please send all bug reports to danielhenderson.codeprojects@gmail.com. If you want to attempt to fix a bug yourself, please submit a pull request.
 
+## Dependencies
+
+### 1. adventure-api
+
+- **Description**: A library used for clickable chat links.
+- **Author**: KyoriPowered
+- **Repository**: [https://github.com/KyoriPowered/adventure]
+- **Version**: 4.16.0
+- **License**: MIT License
+
+### 2. adventure-platform-bukkit
+
+- **Description**: Adventure platform implementations, for servers and proxies.
+- **Author**: KyoriPowered
+- **Repository**: [https://github.com/KyoriPowered/adventure-platform]
+- **Version**: 4.3.2
+- **License**: MIT License
+
+### Third-party Licenses
+
+- **adventure-api**: MIT License. See the [LICENSE](https://github.com/KyoriPowered/adventure/blob/main/4/license.txt) file in the repository for details.
+- **adventure-platform-bukkit**: MIT License. See the [LICENSE](https://github.com/KyoriPowered/adventure-platform/blob/main/license.txt) file in the repository for details.
+
+
 ## License
 
-> **License:** This Minecraft plugin is not released under any license. All rights reserved. I give permission to server owners to install the plugin on their server.
+> **License:** This Minecraft plugin is not released under any license. All rights reserved. I give permission to server owners to install the plugin on their servers.
 
 ## Contact
 
@@ -24,7 +48,7 @@ I can be contacted at danielhenderson.codeprojects@gmail.com.
 
 ## Disclaimer
 
-**Disclaimer: For demonstration purposes only.**
+**Disclaimer:**
 
 - The plugin is offered without any warranties or guarantees of any kind.
 - It is not intended for modification without explicit permission from the creator.
