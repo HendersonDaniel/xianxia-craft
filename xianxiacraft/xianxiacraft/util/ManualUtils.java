@@ -1,6 +1,7 @@
 package xianxiacraft.xianxiacraft.util;
 
 import org.bukkit.entity.Player;
+import xianxiacraft.xianxiacraft.XianxiaCraft;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +16,7 @@ public class ManualUtils {
 
         Set<String> daoAttainmentSet = new HashSet<>(daoAttainmentMap.getOrDefault(player.getUniqueId(), new HashSet<>()));
         daoAttainmentSet.remove(getManual(player));
-        return daoAttainmentSet.size();
+        return Math.min(daoAttainmentSet.size(), 3);
     }
 
 
