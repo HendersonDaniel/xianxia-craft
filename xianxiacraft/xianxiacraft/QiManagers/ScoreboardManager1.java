@@ -121,6 +121,30 @@ public class ScoreboardManager1 implements Listener {
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
     }
+
+
+
+
+
+    public static void hideScoreboard(Player player) {
+        // empty scoreboard
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        if (manager != null) {
+            Scoreboard emptyScoreboard = manager.getNewScoreboard();
+            //
+            player.setScoreboard(emptyScoreboard);
+        }
+    }
+
+    public static void showScoreboard(Player player) {
+        Scoreboard scoreboard = scoreboardMap.get(player.getUniqueId());
+        if (scoreboard != null) {
+            player.setScoreboard(scoreboard);
+        } else {
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        }
+    }
+
 }
 
 

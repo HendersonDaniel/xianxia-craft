@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
+import xianxiacraft.xianxiacraft.commands.PlayerCommands;
 import xianxiacraft.xianxiacraft.customItems.ToolItems;
 import xianxiacraft.xianxiacraft.handlers.*;
 import xianxiacraft.xianxiacraft.QiManagers.PointManager;
@@ -64,19 +65,24 @@ public final class XianxiaCraft extends JavaPlugin {
         new ItemDropEvents(this);
         new MoveEvents(this);
         new CustomItemEvents(this);
+        new PlayerDeathHandler(this);
 
 
 
         //command logic
         CultPassiveCommandExecutor cultPassiveCommandExecutor = new CultPassiveCommandExecutor();
         Objects.requireNonNull(getCommand("qipunch")).setExecutor(cultPassiveCommandExecutor);
-        Objects.requireNonNull(getCommand("cultutorial")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qimine")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qimove")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("detonate")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qiaura")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qifly")).setExecutor(cultPassiveCommandExecutor);
-        Objects.requireNonNull(getCommand("manualaccept")).setExecutor(cultPassiveCommandExecutor);
+
+        PlayerCommands playerCommands = new PlayerCommands();
+        Objects.requireNonNull(getCommand("cultutorial")).setExecutor(playerCommands);
+        Objects.requireNonNull(getCommand("manualaccept")).setExecutor(playerCommands);
+        Objects.requireNonNull(getCommand("dantianscoreboard")).setExecutor(playerCommands);
+
 
         OperatorCommands operatorCommands = new OperatorCommands();
         Objects.requireNonNull(getCommand("addstage")).setExecutor(operatorCommands);

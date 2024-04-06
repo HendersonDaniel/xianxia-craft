@@ -118,7 +118,7 @@ public class ManualItems {
         assert bookMeta != null;
         bookMeta.setTitle("Demonic Manual");
         bookMeta.setAuthor("Spellslot");
-        bookMeta.setDisplayName("Infinite Heart Flow Yin Technique");
+        bookMeta.setDisplayName("Yin Heart Flow Technique");
         bookMeta.addPage("Absorb the lifeforce of villagers and players to advance to immortality. \n" +
                 "\n" +
                 "Villagers give a measly sum, but players give huge amounts of energy.");

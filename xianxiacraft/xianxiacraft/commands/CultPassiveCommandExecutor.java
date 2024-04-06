@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import xianxiacraft.xianxiacraft.QiManagers.ManualManager;
 import xianxiacraft.xianxiacraft.QiManagers.TechniqueManager;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
@@ -20,7 +19,6 @@ import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.qiAuraGlow;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual.fattyManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.SugarFiendManual.sugarFiendQiMove;
-import static xianxiacraft.xianxiacraft.util.ManualItems.tutorialBookItem;
 
 public class CultPassiveCommandExecutor implements CommandExecutor {
 
@@ -37,11 +35,6 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
         Player sender = (Player) commandSender;
 
 
-        //tutorial book
-        if(command.getName().equalsIgnoreCase("cultutorial")){
-            sender.getWorld().dropItem(sender.getLocation(), tutorialBookItem);
-            return true;
-        }
 
         //detonate
         if(command.getName().equalsIgnoreCase("detonate")){
@@ -192,12 +185,7 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
             return true;
         }
 
-        //accept manual
-        if(command.getName().equalsIgnoreCase("manualaccept")){
 
-            ManualManager.accept(sender);
-
-        }
 
 
 

@@ -272,22 +272,22 @@ public class HitEvents implements Listener {
                     event.setDamage(1);
                 }
 
-
+                //THIS HAS BEEN MOVED TO PlayerDeathHandler
                 //demonic manual leeching
-                if((defendingPlayer.getHealth()-event.getFinalDamage()) <= 0 && attackingPlayerManual.equals("Demonic Manual")){
-                    int points1 = getPoints(defendingPlayer);
-                    int stage1 = getStage(defendingPlayer);
-
-                    //var1 is the points needed to get from stage 0 to current stage-1
-                    int variable1 = (int) (20 * Math.pow(2, (stage1))) - 20;
-                    int leeched = (points1 - variable1-1);
-
-                    setPoints(defendingPlayer,points1-leeched);
-                    addPoints(attackingPlayer,leeched);
-                    updateScoreboard(defendingPlayer);
-                    updateScoreboard(attackingPlayer);
-
-                }
+//                if((defendingPlayer.getHealth()-event.getFinalDamage()) <= 0 && attackingPlayerManual.equals("Demonic Manual")){
+//                    int points1 = getPoints(defendingPlayer);
+//                    int stage1 = getStage(defendingPlayer);
+//
+//                    //var1 is the points needed to get from stage 0 to current stage-1
+//                    int variable1 = (int) (20 * Math.pow(2, (stage1))) - 20;
+//                    int leeched = (points1 - variable1-1);
+//
+//                    setPoints(defendingPlayer,points1-leeched);
+//                    addPoints(attackingPlayer,leeched);
+//                    updateScoreboard(defendingPlayer);
+//                    updateScoreboard(attackingPlayer);
+//
+//                }
 
 
 
