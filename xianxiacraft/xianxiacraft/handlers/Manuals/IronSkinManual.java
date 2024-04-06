@@ -20,7 +20,7 @@ public class IronSkinManual extends Manual {
     //qi regen: 0.01
 
     public IronSkinManual(){
-        super("Ironskin Manual",0.01,4,6);
+        super("Ironskin Manual",0.01,2,7);
 
     }
 

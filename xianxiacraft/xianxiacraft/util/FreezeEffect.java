@@ -23,7 +23,9 @@ public class FreezeEffect {
 
     public static void createIce(Location location) {
         Block block = location.getBlock();
-        block.setType(Material.ICE);
+        if(block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR){
+            block.setType(Material.ICE);
+        }
     }
 
     public static void removeIce(Location location) {
