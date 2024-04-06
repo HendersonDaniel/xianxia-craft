@@ -19,6 +19,8 @@ import xianxiacraft.xianxiacraft.commands.OperatorCommands;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
 import xianxiacraft.xianxiacraft.util.ManualItems;
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +42,7 @@ public final class XianxiaCraft extends JavaPlugin {
     PointManager pointManager;
     ManualManager manualManager;
     QiManager qiManager;
+    private static BukkitAudiences adventure;
 
     @Override
     public void onEnable() {
@@ -52,6 +55,8 @@ public final class XianxiaCraft extends JavaPlugin {
 
         qiManager = new QiManager(this);
         qiManager.loadQiData();
+
+        adventure = BukkitAudiences.create(this);
 
         new ScoreboardManager1(this);
         new PointHandler(this);
@@ -71,6 +76,7 @@ public final class XianxiaCraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("detonate")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qiaura")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qifly")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("manaccept")).setExecutor(cultPassiveCommandExecutor);
 
         OperatorCommands operatorCommands = new OperatorCommands();
         Objects.requireNonNull(getCommand("addstage")).setExecutor(operatorCommands);
@@ -142,7 +148,10 @@ public final class XianxiaCraft extends JavaPlugin {
         manualManager.saveManualData();
         qiManager.saveQiData();
 
-
+        if (adventure != null) {
+            adventure.close();
+            adventure = null;
+        }
 
         Bukkit.getScheduler().cancelTasks(this);
     }
@@ -291,6 +300,12 @@ public final class XianxiaCraft extends JavaPlugin {
                 qiAuraParticleEffect(player);
             }
         }
+    }
+
+
+
+    public static BukkitAudiences getAdventure() {
+        return adventure;
     }
 
 }
