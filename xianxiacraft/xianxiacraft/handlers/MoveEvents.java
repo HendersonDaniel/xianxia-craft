@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -68,6 +70,23 @@ public class MoveEvents implements Listener {
 //                event.setCancelled(true);
 //            }
 //        }
+    }
+
+    @EventHandler
+    public void onBlockExplode(EntityExplodeEvent event){
+
+        for (Block block : event.blockList()) {
+            Location blockLocation = block.getLocation();
+            //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
+            for (Map<Block, BlockState> playerBlocks : originalBlockStates.values()) {
+                boolean blockAffected = playerBlocks.keySet().stream()
+                        .anyMatch(b -> b.getLocation().equals(blockLocation));
+                if (blockAffected) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
     }
 
     //private Map<UUID,Map<Block,Material>> originalBlocks = new HashMap<>();
