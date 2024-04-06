@@ -193,7 +193,7 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
         }
 
         //accept manual
-        if(command.getName().equalsIgnoreCase("manaccept")){
+        if(command.getName().equalsIgnoreCase("manualaccept")){
 
             ManualManager.accept(sender);
 

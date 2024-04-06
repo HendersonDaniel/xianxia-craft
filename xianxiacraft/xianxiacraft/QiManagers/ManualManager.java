@@ -134,35 +134,41 @@ public class ManualManager implements Listener {
     public static void accept(Player p) {
 
         ItemStack itemInHand = p.getInventory().getItemInMainHand();
-        BookMeta bookMeta = itemInHand != null ? (BookMeta) itemInHand.getItemMeta() : null;
-        String bookAuthor = bookMeta != null ? bookMeta.getAuthor() : null;
-        String bookTitle = bookMeta != null ? bookMeta.getTitle() : null;
 
-        if(itemInHand != null && bookMeta != null && bookAuthor != null && bookAuthor.equals("Spellslot") && bookTitle != null && !(bookTitle.equals(manualsMap.get(p.getUniqueId())))) {
+        if(itemInHand.getType() == Material.WRITTEN_BOOK){
 
-            setPunchBool(p, false);
-            setMoveBool(p, false);
-
-            sugarFiendQiMove(p, false);
-            fattyManualQiMove(p, false);
-            fungalManualQiMove(p, false);
+            BookMeta bookMeta = (BookMeta) itemInHand.getItemMeta();
+            String bookAuthor = bookMeta.getAuthor();
+            String bookTitle = bookMeta.getTitle();
 
 
-            setMineBool(p, false);
-            setAuraBool(p, false);
-            setFlyBool(p, false);
+            if(bookAuthor.equals("Spellslot")  && !(bookTitle.equals(manualsMap.get(p.getUniqueId())))) {
 
-            p.setAllowFlight(false);
-            p.setFlySpeed(0.1f);
+                //set all technique commands to false
+                setPunchBool(p, false);
+                setMoveBool(p, false);
+
+                sugarFiendQiMove(p, false);
+                fattyManualQiMove(p, false);
+                fungalManualQiMove(p, false);
 
 
-            manualsMap.put(p.getUniqueId(), bookTitle);
-            PointManager.setPoints(p, 1);
-            QiManager.setQi(p, 0);
-            p.sendMessage(ChatColor.GOLD + "Cultivation Manual changed to " + bookTitle + ".\nCultivation has been reset.");
-            //set all technique commands to false
+                setMineBool(p, false);
+                setAuraBool(p, false);
+                setFlyBool(p, false);
 
-            updateScoreboard(p);
+                p.setAllowFlight(false);
+                p.setFlySpeed(0.1f);
+
+
+                manualsMap.put(p.getUniqueId(), bookTitle);
+                PointManager.setPoints(p, 1);
+                QiManager.setQi(p, 0);
+                p.sendMessage(ChatColor.GOLD + "Cultivation Manual changed to " + bookMeta.getDisplayName() + ".\nCultivation has been reset.");
+
+
+                updateScoreboard(p);
+            }
         }
     }
 

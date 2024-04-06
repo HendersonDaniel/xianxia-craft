@@ -76,7 +76,7 @@ public final class XianxiaCraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("detonate")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qiaura")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qifly")).setExecutor(cultPassiveCommandExecutor);
-        Objects.requireNonNull(getCommand("manaccept")).setExecutor(cultPassiveCommandExecutor);
+        Objects.requireNonNull(getCommand("manualaccept")).setExecutor(cultPassiveCommandExecutor);
 
         OperatorCommands operatorCommands = new OperatorCommands();
         Objects.requireNonNull(getCommand("addstage")).setExecutor(operatorCommands);
