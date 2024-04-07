@@ -35,6 +35,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual.fattyManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.SugarFiendManual.sugarFiendQiMove;
+import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.checkIfBlockUnderPlayerSomewhere;
 import static xianxiacraft.xianxiacraft.util.CountNearbyBlocks.countNearbyBlocks;
 import static xianxiacraft.xianxiacraft.util.ParticleEffects.qiAuraParticleEffect;
 
@@ -248,7 +249,7 @@ public final class XianxiaCraft extends JavaPlugin {
                         case "Fungal Manual":
                             if (getQi(player) >= 16) {
                                 QiManager.subtractQi(player, 16);
-                                if(countNearbyBlocks(player, Material.MYCELIUM,2) > 0){
+                                if(countNearbyBlocks(player, Material.MYCELIUM,2) > 0 || checkIfBlockUnderPlayerSomewhere(player,Material.MYCELIUM,20)){
                                     fungalManualQiMove(player,true); // true because it is in an if statement already checking for movebool
                                 }
                             } else {

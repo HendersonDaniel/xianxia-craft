@@ -53,6 +53,21 @@ public class CountNearbyBlocks {
 
         return blocks.size();
     }
+
+
+    public static boolean checkIfBlockUnderPlayerSomewhere(Player player, Material material, int height){
+        int playerX = player.getLocation().getBlockX();
+        int playerY = player.getLocation().getBlockY();
+        int playerZ = player.getLocation().getBlockZ();
+
+        for(int i = 0; i < height;i++){
+            Block block = player.getWorld().getBlockAt(playerX, playerY-i, playerZ);
+            if (block.getType() == material) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

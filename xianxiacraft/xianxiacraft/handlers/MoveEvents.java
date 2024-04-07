@@ -527,6 +527,7 @@ public class MoveEvents implements Listener {
             case BEETROOTS:
             case NETHER_WART:
             case SUGAR_CANE:
+            case BAMBOO:
                 return true;
             default:
 
@@ -541,8 +542,19 @@ public class MoveEvents implements Listener {
             case BEETROOTS:
             case NETHER_WART:
             case SUGAR_CANE:
+            case BAMBOO:
+            case PUMPKIN_SEEDS:
+            case MELON_SEEDS:
+            case BEETROOT_SEEDS:
+            case TORCHFLOWER_SEEDS:
                 return true;
             default:
+        }
+
+        String materialAboveName = aboveBlock.getType().name();
+
+        if(materialAboveName.endsWith("SAPLING") || materialAboveName.endsWith("GRASS")){
+            return true;
         }
 
         String materialName = block.getType().name();
