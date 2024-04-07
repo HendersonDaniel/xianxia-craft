@@ -528,6 +528,9 @@ public class MoveEvents implements Listener {
             case NETHER_WART:
             case SUGAR_CANE:
             case BAMBOO:
+            case END_PORTAL:
+            case NETHER_PORTAL:
+            case END_PORTAL_FRAME:
                 return true;
             default:
 
