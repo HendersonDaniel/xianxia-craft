@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashSet;
+
 import static xianxiacraft.xianxiacraft.customItems.ToolItems.taijiPaintingItem;
 import static xianxiacraft.xianxiacraft.util.ManualItems.*;
 import static xianxiacraft.xianxiacraft.customItems.ToolItems.superHoeItem;
@@ -107,8 +109,15 @@ public class OperatorCommands implements CommandExecutor {
 
         //checkstats
         if(command.getName().equalsIgnoreCase("checkstats")){
+            if(strings.length == 0){
+                sender.sendMessage(ChatColor.GOLD + "Player: " + sender.getName() + "\nManual: " + getManual(sender) +
+                            "\nStage: " + getStage(sender) + " [" + percentToNextStage(sender) + "%]\nAttack: " + getManualAttackPerStage(getManual(sender))*getStage(sender) +
+                            "\nDefense: " + getManualDefensePerStage(getManual(sender))*getStage(sender) + "\nDao Attainments: " + daoAttainmentMap.getOrDefault(sender.getUniqueId(), new HashSet<>()).size() + "/3");
+                return true;
+            }
+
             if(!(sender.hasPermission("xianxiacraft.cultivation.checkstats"))){
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                sender.sendMessage(ChatColor.RED + "You do not have permission to do this.");
                 return true;
             }
             if(strings.length == 1){
@@ -116,7 +125,7 @@ public class OperatorCommands implements CommandExecutor {
                 if(player != null){
                     sender.sendMessage(ChatColor.GOLD + "Player: " + player.getName() + "\nManual: " + getManual(player) +
                             "\nStage: " + getStage(player) + " [" + percentToNextStage(player) + "%]\nAttack: " + getManualAttackPerStage(getManual(player))*getStage(player) +
-                            "\nDefense: " + getManualDefensePerStage(getManual(player))*getStage(player));
+                            "\nDefense: " + getManualDefensePerStage(getManual(player))*getStage(player) + "\nDao Attainments: " +  daoAttainmentMap.getOrDefault(sender.getUniqueId(), new HashSet<>()).size() + "/3");
 
                 } else {
                     sender.sendMessage(ChatColor.RED + "Player not found.");

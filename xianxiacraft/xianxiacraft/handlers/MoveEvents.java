@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -202,6 +201,7 @@ public class MoveEvents implements Listener {
                     for (int z = centerZ - radius; z <= centerZ + radius; z++) {
                         int i = (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y) + (centerZ - z) * (centerZ - z);
                         if (i <= radius * radius) {
+                            assert world != null;
                             Block block = world.getBlockAt(x, y, z);
 
                             if (qiAuraBlacklisted(block)) {
@@ -531,6 +531,7 @@ public class MoveEvents implements Listener {
             case END_PORTAL:
             case NETHER_PORTAL:
             case END_PORTAL_FRAME:
+            case OBSIDIAN:
                 return true;
             default:
 

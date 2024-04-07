@@ -1,5 +1,7 @@
 package xianxiacraft.xianxiacraft.QiManagers;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,9 +47,12 @@ public class PointManager implements Listener {
     public static void addPoints(Player player, int points) {
         UUID id = player.getUniqueId();
         pointMap.put(id, getPoints(player) + points);
-        if(getStage(player) == 10){
+        if(getStage(player) >= 10){
             Set<String> t = daoAttainmentMap.getOrDefault(id,new HashSet<>());
-            t.add(getManual(player));
+            if(t.add(getManual(player))){
+                player.sendMessage(ChatColor.DARK_PURPLE + "You have achieved a Dao Attainment.");
+                player.playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, 1.0F, 1.0F);
+            }
             daoAttainmentMap.put(id,t);
         }
     }

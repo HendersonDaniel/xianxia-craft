@@ -9,16 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
-
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManualQiRegen;
@@ -30,7 +25,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.setHiddenByT
 
 public class CustomItemEvents implements Listener {
 
-    private XianxiaCraft plugin;
+    private final XianxiaCraft plugin;
     public CustomItemEvents(XianxiaCraft plugin){
         Bukkit.getPluginManager().registerEvents(this,plugin);
         this.plugin = plugin;
@@ -49,6 +44,7 @@ public class CustomItemEvents implements Listener {
             // True Essence Hoe
             NamespacedKey key = new NamespacedKey(plugin, "customUtilityTools");
             ItemMeta itemMeta = event.getItem().getItemMeta();
+            assert itemMeta != null;
             PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
             if(container.has(key , PersistentDataType.STRING)) {
@@ -58,6 +54,7 @@ public class CustomItemEvents implements Listener {
 
                     Block block = event.getClickedBlock();
 
+                    assert block != null;
                     int blockX = block.getX();
                     int blockY = block.getY();
                     int blockZ = block.getZ();
