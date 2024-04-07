@@ -44,11 +44,11 @@ public class FungalManual extends Manual{
             ItemStack itemInRightHand = player.getInventory().getItemInMainHand();
             ItemStack itemInLeftHand = player.getInventory().getItemInOffHand();
 
-            if (item.equals(itemInRightHand)) {
-                itemInRightHand.setAmount(itemInRightHand.getAmount() - 1);
-            } else if (item.equals(itemInLeftHand)) {
-                itemInLeftHand.setAmount(itemInLeftHand.getAmount() - 1);
-            }
+//            if (item.equals(itemInRightHand)) {
+//                itemInRightHand.setAmount(itemInRightHand.getAmount() - 1);
+//            } else if (item.equals(itemInLeftHand)) {
+//                itemInLeftHand.setAmount(itemInLeftHand.getAmount() - 1);
+//            }
 
             if (points + 2 + (2*cultivationModifier) >= (int) (20 * Math.pow(10, (stage + 1) * Math.log10(2)) - 20)) {
                 if (!(CountNearbyBlocks.countNearbyBlocks(player,Material.MYCELIUM) >= 1)) {

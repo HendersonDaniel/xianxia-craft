@@ -93,7 +93,7 @@ public class PointHandler implements Listener {
                 event.setCancelled(SugarFiendManual.sugarFiendManualPointIncrement(player,item));
                 break;
             case "Fungal Manual":
-                event.setCancelled(FungalManual.fungalManualPointIncrement(player,item));
+                FungalManual.fungalManualPointIncrement(player,item);
                 break;
         }
     }
