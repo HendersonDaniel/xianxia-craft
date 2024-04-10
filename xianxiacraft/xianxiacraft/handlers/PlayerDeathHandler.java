@@ -35,7 +35,7 @@ public class PlayerDeathHandler implements Listener {
             assert attackingPlayer != null;
             if(getManual(attackingPlayer).equals("Demonic Manual")){
 
-                int cultivationModifier = getCultivationModifier(attackingPlayer);
+                
 
                 int points1 = getPoints(defendingPlayer);
                 int stage1 = getStage(defendingPlayer);
@@ -45,7 +45,7 @@ public class PlayerDeathHandler implements Listener {
                 int leeched = (points1 - variable1-1);
 
                 setPoints(defendingPlayer,points1-leeched);
-                addPoints(attackingPlayer,leeched + (leeched * cultivationModifier));
+                addPoints(attackingPlayer,leeched);
                 updateScoreboard(defendingPlayer);
                 updateScoreboard(attackingPlayer);
 
