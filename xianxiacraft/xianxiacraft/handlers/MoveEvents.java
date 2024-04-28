@@ -46,54 +46,46 @@ public class MoveEvents implements Listener {
     public void onPlayerMine(BlockBreakEvent event){
         Player player = event.getPlayer();
         //so that players cant infinitely farm their aura blocks.
-        if(getAuraBool(player)){
+        if((getMoveBool(player) && getManual(player).equals("Ice Manual"))){
             event.setCancelled(true);
         }
 
-        Block block = event.getBlock();
-        Location blockLocation = block.getLocation();
-        //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
-        for (Map<Block, BlockState> playerBlocks : originalBlockStates.values()) {
-            boolean blockAffected = playerBlocks.keySet().stream()
-                    .anyMatch(b -> b.getLocation().equals(blockLocation));
-            if (blockAffected) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
 //        Block block = event.getBlock();
+//        Location blockLocation = block.getLocation();
 //        //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
-//        for (UUID playerId : originalBlocks.keySet()) {
-//            if (originalBlocks.get(playerId).containsKey(block)) {
+//        for (Map<Block, BlockState> playerBlocks : originalBlockStates.values()) {
+//            boolean blockAffected = playerBlocks.keySet().stream()
+//                    .anyMatch(b -> b.getLocation().equals(blockLocation));
+//            if (blockAffected) {
 //                event.setCancelled(true);
+//                return;
 //            }
 //        }
+
+
     }
 
-    @EventHandler
-    public void onBlockExplode(EntityExplodeEvent event){
+//    @EventHandler
+//    public void onBlockExplode(EntityExplodeEvent event){
+//
+//        for (Block block : event.blockList()) {
+//            Location blockLocation = block.getLocation();
+//            //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
+//            for (Map<Block, BlockState> playerBlocks : originalBlockStates.values()) {
+//                boolean blockAffected = playerBlocks.keySet().stream()
+//                        .anyMatch(b -> b.getLocation().equals(blockLocation));
+//                if (blockAffected) {
+//                    event.setCancelled(true);
+//                    return;
+//                }
+//            }
+//        }
+//    }
 
-        for (Block block : event.blockList()) {
-            Location blockLocation = block.getLocation();
-            //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
-            for (Map<Block, BlockState> playerBlocks : originalBlockStates.values()) {
-                boolean blockAffected = playerBlocks.keySet().stream()
-                        .anyMatch(b -> b.getLocation().equals(blockLocation));
-                if (blockAffected) {
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-    }
+//    private Map<UUID,Map<Block, BlockState>> originalBlockStates = new HashMap<>();
+//
+//    private Map<UUID,Boolean> isCleanedMap = new HashMap<>();
 
-    //private Map<UUID,Map<Block,Material>> originalBlocks = new HashMap<>();
-    private Map<UUID,Map<Block, BlockState>> originalBlockStates = new HashMap<>();
-    // Map<Block,Material> originalBlocks = new HashMap<>();
-
-    private Map<UUID,Boolean> isCleanedMap = new HashMap<>();
-    //boolean isCleaned = true;
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
@@ -127,131 +119,10 @@ public class MoveEvents implements Listener {
         }
 
         //qiaura stuff
-
-        if (getAuraBool(player)) {
-            String playerManual = getManual(player);
-            isCleanedMap.put(player.getUniqueId(), false);
-
-            Material blockType1;
-            Material blockType2;
-
-            switch(playerManual){
-                case "Ice Manual":
-                    blockType1 = Material.PACKED_ICE;
-                    blockType2 = Material.BLUE_ICE;
-                    break;
-                case "Sugar Fiend":
-                    blockType1 = Material.NETHERRACK;
-                    blockType2 = Material.NETHER_QUARTZ_ORE;
-                    break;
-                case "Fatty Manual":
-                    blockType1 = Material.DIRT;
-                    blockType2 = Material.COARSE_DIRT;
-                    break;
-                case "Fungal Manual":
-                    blockType1 = Material.MYCELIUM;
-                    blockType2 = Material.MYCELIUM;
-                    break;
-                case "Ironskin Manual":
-                    blockType1 = Material.RAW_IRON_BLOCK;
-                    blockType2 = Material.IRON_BLOCK;
-                    break;
-                case "LightningManual":
-                    blockType1 = Material.RAW_COPPER_BLOCK;
-                    blockType2 = Material.COPPER_BLOCK;
-                    break;
-                case "Phoenix Manual":
-                    blockType1 = Material.HONEYCOMB_BLOCK;
-                    blockType2 = Material.MAGMA_BLOCK;
-                    break;
-                case "Poison Manual":
-                    blockType1 = Material.WARPED_HYPHAE;
-                    blockType2 = Material.MANGROVE_ROOTS;
-                    break;
-                case "Space Manual":
-                    blockType1 = Material.BLACK_CONCRETE;
-                    blockType2 = Material.END_STONE;
-                    break;
-                case "Demonic Manual":
-                    blockType1 = Material.SCULK;
-                    blockType2 = Material.SCULK;
-                    break;
-                default:
-                    blockType1 = Material.AIR;
-                    blockType2 = Material.AIR;
-            }
-
-            Location center = player.getLocation().clone().subtract(0, 1, 0);
-            int radius = getStage(player) / 2;
-            World world = center.getWorld();
-            int centerX = center.getBlockX();
-            int centerY = center.getBlockY();
-            int centerZ = center.getBlockZ();
-
-            // revert changes
-            Map<Block, BlockState> playerOriginalBlockStates = originalBlockStates.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
-            for (BlockState originalState : playerOriginalBlockStates.values()) {
-                // reapply saved state
-                originalState.update(true, false);
-            }
-            playerOriginalBlockStates.clear();
-
-            for (int x = centerX - radius; x <= centerX + radius; x++) {
-                for (int y = centerY - radius; y <= centerY + radius; y++) {
-                    for (int z = centerZ - radius; z <= centerZ + radius; z++) {
-                        int i = (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y) + (centerZ - z) * (centerZ - z);
-                        if (i <= radius * radius) {
-                            assert world != null;
-                            Block block = world.getBlockAt(x, y, z);
-
-                            if (qiAuraBlacklisted(block)) {
-                                continue;
-                            }
-
-                            //to check if the block is in any other player's originalBlockStates map
-                            boolean foundInOtherPlayerMap = false;
-                            for (UUID playerId : originalBlockStates.keySet()) {
-                                if (!playerId.equals(player.getUniqueId()) && originalBlockStates.get(playerId).containsKey(block)) {
-                                    foundInOtherPlayerMap = true;
-                                    break;
-                                }
-                            }
-
-                            if (!foundInOtherPlayerMap) {
-                                // save state
-                                originalBlockStates.get(player.getUniqueId()).put(block, block.getState());
-                                if (block.getType() != Material.AIR && block.getType() != Material.CAVE_AIR && block.getType() != Material.BEDROCK && block.getType() != blockType1 && block.getType() != blockType2) {
-                                    int blockOrNoBlock = (int) (Math.random() * 5);
-                                    if (blockOrNoBlock == 1) {
-                                        block.setType(blockType2);
-                                    } else {
-                                        block.setType(blockType1);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Revert changes when aura is off and it hasn't been cleaned yet
-        if ((!getAuraBool(player)) && (!isCleanedMap.getOrDefault(player.getUniqueId(), true))) {
-            Map<Block, BlockState> playerOriginalBlockStates = originalBlockStates.get(player.getUniqueId());
-            if (playerOriginalBlockStates != null) {
-                for (BlockState originalState : playerOriginalBlockStates.values()) {
-                    originalState.update(true, false);
-                }
-                playerOriginalBlockStates.clear();
-            }
-            isCleanedMap.put(player.getUniqueId(), true);
-        }
-    }
-
-//        if(getAuraBool(player)){
+//
+//        if (getAuraBool(player)) {
 //            String playerManual = getManual(player);
-//            isCleanedMap.put(player.getUniqueId(),false);
-//            //isCleaned = false;
+//            isCleanedMap.put(player.getUniqueId(), false);
 //
 //            Material blockType1;
 //            Material blockType2;
@@ -302,58 +173,48 @@ public class MoveEvents implements Listener {
 //                    blockType2 = Material.AIR;
 //            }
 //
-//
-//            Location center = player.getLocation().clone().subtract(0,1,0);
-//
-//            int radius = getStage(player)/2;
-//
+//            Location center = player.getLocation().clone().subtract(0, 1, 0);
+//            int radius = getStage(player) / 2;
 //            World world = center.getWorld();
 //            int centerX = center.getBlockX();
 //            int centerY = center.getBlockY();
 //            int centerZ = center.getBlockZ();
 //
-//
-//            //revert changes
-//            Map<Block, Material> playerOriginalBlocks = originalBlocks.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
-//
-//            for (Map.Entry<Block, Material> entry : playerOriginalBlocks.entrySet()) {
-//                Block block = entry.getKey();
-//                Material originalType = entry.getValue();
-//                block.setType(originalType);
+//            // revert changes
+//            Map<Block, BlockState> playerOriginalBlockStates = originalBlockStates.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
+//            for (BlockState originalState : playerOriginalBlockStates.values()) {
+//                // reapply saved state
+//                originalState.update(true, false);
 //            }
-//
-//            playerOriginalBlocks.clear();
+//            playerOriginalBlockStates.clear();
 //
 //            for (int x = centerX - radius; x <= centerX + radius; x++) {
 //                for (int y = centerY - radius; y <= centerY + radius; y++) {
 //                    for (int z = centerZ - radius; z <= centerZ + radius; z++) {
 //                        int i = (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y) + (centerZ - z) * (centerZ - z);
-//                        if (i <= radius*radius) {
+//                        if (i <= radius * radius) {
 //                            assert world != null;
 //                            Block block = world.getBlockAt(x, y, z);
 //
-//
-//                            //if block is container then skip it
-//                            if(qiAuraBlacklisted(block)){
+//                            if (qiAuraBlacklisted(block)) {
 //                                continue;
 //                            }
 //
-//                            //if block is in any of the originalBlocks player maps that is not the player making this change, dont change it
+//                            //to check if the block is in any other player's originalBlockStates map
 //                            boolean foundInOtherPlayerMap = false;
-//                            for (UUID playerId : originalBlocks.keySet()) {
-//                                if (!playerId.equals(player.getUniqueId()) && originalBlocks.get(playerId).containsKey(block)) {
+//                            for (UUID playerId : originalBlockStates.keySet()) {
+//                                if (!playerId.equals(player.getUniqueId()) && originalBlockStates.get(playerId).containsKey(block)) {
 //                                    foundInOtherPlayerMap = true;
 //                                    break;
 //                                }
 //                            }
-//                            if(!foundInOtherPlayerMap){
-//                                originalBlocks.get(player.getUniqueId()).put(block,block.getType());
-//                                // make sure it isn't air or bedrock
-//                                if(block.getType() != Material.AIR && block.getType() != Material.CAVE_AIR && block.getType() != Material.BEDROCK && block.getType() != blockType1 && block.getType() != blockType2){
 //
+//                            if (!foundInOtherPlayerMap) {
+//                                // save state
+//                                originalBlockStates.get(player.getUniqueId()).put(block, block.getState());
+//                                if (block.getType() != Material.AIR && block.getType() != Material.CAVE_AIR && block.getType() != Material.BEDROCK && block.getType() != blockType1 && block.getType() != blockType2) {
 //                                    int blockOrNoBlock = (int) (Math.random() * 5);
-//
-//                                    if(blockOrNoBlock == 1){
+//                                    if (blockOrNoBlock == 1) {
 //                                        block.setType(blockType2);
 //                                    } else {
 //                                        block.setType(blockType1);
@@ -361,36 +222,24 @@ public class MoveEvents implements Listener {
 //                                }
 //                            }
 //                        }
-//
 //                    }
 //                }
 //            }
-//
-//
-//
 //        }
-//        if((!getAuraBool(player)) && (!isCleanedMap.getOrDefault(player.getUniqueId(),true))){
-//            //revert changes
-//            Map<Block, Material> playerOriginalBlocks = originalBlocks.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
 //
-//            //Map<Block, Material> playerOriginalBlocks = originalBlocks.get(playerId);
-//
-//            for (Map.Entry<Block, Material> entry : playerOriginalBlocks.entrySet()) {
-//                Block block = entry.getKey();
-//                Material originalType = entry.getValue();
-//                block.setType(originalType);
+//        // Revert changes when aura is off and it hasn't been cleaned yet
+//        if ((!getAuraBool(player)) && (!isCleanedMap.getOrDefault(player.getUniqueId(), true))) {
+//            Map<Block, BlockState> playerOriginalBlockStates = originalBlockStates.get(player.getUniqueId());
+//            if (playerOriginalBlockStates != null) {
+//                for (BlockState originalState : playerOriginalBlockStates.values()) {
+//                    originalState.update(true, false);
+//                }
+//                playerOriginalBlockStates.clear();
 //            }
-//
-//            playerOriginalBlocks.clear();
-//            /*
-//            for (Block block1 : originalBlocks.keySet()) {
-//                block1.setType(originalBlocks.get(block1));
-//            }
-//            originalBlocks.clear();
-//             */
-//            isCleanedMap.put(player.getUniqueId(),true);
-//            //isCleaned = true;
+//            isCleanedMap.put(player.getUniqueId(), true);
 //        }
+    }
+
 
 
 

@@ -16,6 +16,7 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import xianxiacraft.xianxiacraft.XianxiaCraft;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
+import xianxiacraft.xianxiacraft.runnables.RunAura;
 import xianxiacraft.xianxiacraft.util.ChatUtils;
 
 import java.io.File;
@@ -26,6 +27,7 @@ import java.util.*;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ScoreboardManager1.updateScoreboard;
 import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
+import static xianxiacraft.xianxiacraft.commands.CultPassiveCommandExecutor.runAuraMap;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual.fattyManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.SugarFiendManual.sugarFiendQiMove;
@@ -131,7 +133,7 @@ public class ManualManager implements Listener {
         }
     }
 
-    public static void accept(Player p) {
+    public static void accept(Player p, XianxiaCraft plugin) {
 
         ItemStack itemInHand = p.getInventory().getItemInMainHand();
 
@@ -155,6 +157,8 @@ public class ManualManager implements Listener {
 
                 setMineBool(p, false);
                 setAuraBool(p, false);
+                runAuraMap.getOrDefault(p,new RunAura(plugin,p)).stop();
+
                 setFlyBool(p, false);
 
                 p.setAllowFlight(false);

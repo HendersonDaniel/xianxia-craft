@@ -5,9 +5,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xianxiacraft.xianxiacraft.QiManagers.TechniqueManager;
+import xianxiacraft.xianxiacraft.runnables.RunAura;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static xianxiacraft.xianxiacraft.QiManagers.ManualManager.getManual;
 import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getMaxQi;
@@ -21,6 +26,13 @@ import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManu
 import static xianxiacraft.xianxiacraft.handlers.Manuals.SugarFiendManual.sugarFiendQiMove;
 
 public class CultPassiveCommandExecutor implements CommandExecutor {
+
+    private final JavaPlugin plugin;
+    public static Map<Player, RunAura> runAuraMap = new HashMap<Player,RunAura>();
+
+    public CultPassiveCommandExecutor(JavaPlugin plugin){
+        this.plugin = plugin;
+    }
 
 
     //all cult commands that give passive effects
@@ -145,11 +157,17 @@ public class CultPassiveCommandExecutor implements CommandExecutor {
             }
 
             boolean currentAuraBool = TechniqueManager.getAuraBool(sender);
+            RunAura runAura = runAuraMap.getOrDefault(sender,new RunAura(plugin,sender));
 
             if(currentAuraBool){
                 sender.sendMessage(ChatColor.GOLD + "QiAura: Inactive");
+                runAura.stop();
+
             } else {
                 sender.sendMessage(ChatColor.GOLD + "QiAura: Active");
+                runAuraMap.put(sender,runAura);
+                runAura.start();
+
             }
 
             TechniqueManager.setAuraBool(sender,!currentAuraBool);

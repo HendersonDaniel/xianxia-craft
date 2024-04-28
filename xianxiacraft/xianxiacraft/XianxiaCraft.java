@@ -18,6 +18,7 @@ import xianxiacraft.xianxiacraft.QiManagers.ManualManager;
 import xianxiacraft.xianxiacraft.commands.CultPassiveCommandExecutor;
 import xianxiacraft.xianxiacraft.commands.OperatorCommands;
 import xianxiacraft.xianxiacraft.handlers.Manuals.*;
+import xianxiacraft.xianxiacraft.runnables.RunAura;
 import xianxiacraft.xianxiacraft.util.ManualItems;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -32,6 +33,7 @@ import static xianxiacraft.xianxiacraft.QiManagers.PointManager.getMaxQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.getQi;
 import static xianxiacraft.xianxiacraft.QiManagers.QiManager.subtractQi;
 import static xianxiacraft.xianxiacraft.QiManagers.TechniqueManager.*;
+import static xianxiacraft.xianxiacraft.commands.CultPassiveCommandExecutor.runAuraMap;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FattyManual.fattyManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.FungalManual.fungalManualQiMove;
 import static xianxiacraft.xianxiacraft.handlers.Manuals.SugarFiendManual.sugarFiendQiMove;
@@ -72,7 +74,7 @@ public final class XianxiaCraft extends JavaPlugin {
 
 
         //command logic
-        CultPassiveCommandExecutor cultPassiveCommandExecutor = new CultPassiveCommandExecutor();
+        CultPassiveCommandExecutor cultPassiveCommandExecutor = new CultPassiveCommandExecutor(this);
         Objects.requireNonNull(getCommand("qipunch")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qimine")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qimove")).setExecutor(cultPassiveCommandExecutor);
@@ -80,7 +82,7 @@ public final class XianxiaCraft extends JavaPlugin {
         Objects.requireNonNull(getCommand("qiaura")).setExecutor(cultPassiveCommandExecutor);
         Objects.requireNonNull(getCommand("qifly")).setExecutor(cultPassiveCommandExecutor);
 
-        PlayerCommands playerCommands = new PlayerCommands();
+        PlayerCommands playerCommands = new PlayerCommands(this);
         Objects.requireNonNull(getCommand("cultutorial")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("manualaccept")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("dantianscoreboard")).setExecutor(playerCommands);
@@ -278,6 +280,7 @@ public final class XianxiaCraft extends JavaPlugin {
                         qiAuraParticleEffect(player);
                     } else {
                         setAuraBool(player, false);
+                        runAuraMap.getOrDefault(player,new RunAura(this,player)).stop();
                         qiAuraGlow(player,getAuraBool(player));
                         player.sendMessage(ChatColor.GOLD + "You did not have enough qi to sustain your aura.");
                     }
