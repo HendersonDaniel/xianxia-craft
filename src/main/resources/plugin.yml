@@ -1,0 +1,32 @@
+name: XianxiaCraft
+version: '${project.version}'
+main: xianxiacraft.xianxiacraft.XianxiaCraft
+api-version: 1.20
+commands:
+  qipunch:
+    description: Augments your punches with qi in unique ways depending on your cultivation manual.
+  cultutorial:
+    description: Gives the player a tutorial book.
+  qimine:
+    description: Augments your mining with qi to let you break blocks faster.
+  qimove:
+    description: Lets you move in unique ways depending on your manual. Costs qi.
+  addstage:
+    description: Adds a stage to user's cultivation.
+    permission: xianxiacraft.cultivation.addstage
+  checkstats:
+    description: Checks the cultivation statistics of a player.
+  detonate:
+    description: Kills the player and sets their qi to 0.
+  obtain:
+    description: Obtain an item added by the XianxiaCraft plugin.
+    permission: xianxiacraft.utility.obtain
+  qiaura:
+    description: Gives you an aura that lets you damage entities around you more efficiently.
+  qifly:
+    description: Lets you fly using qi.
+  manualaccept:
+    description: Confirms manual change.
+  dantianscoreboard:
+    description: Controls the dantian scoreboard.
+    usage: /dantianscoreboard <show | hide>
